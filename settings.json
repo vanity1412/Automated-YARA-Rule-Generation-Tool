@@ -1,0 +1,8 @@
+{
+  "language": "vi",
+  "language_selected": true,
+  "theme": "light",
+  "mode": "advanced",
+  "default_db_mode": "Full quality DB",
+  "log_retention_lines": 8000
+}

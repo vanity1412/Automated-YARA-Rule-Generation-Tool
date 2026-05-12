@@ -1,0 +1,1388 @@
+ASCII Strings
+------------------------------------------------------------------------
+33;C:\\Users\\User\\Desktop\\2008\\18.2.20\\imagestone_src\\image_stone\\example\\002\\Release\\002.pdb
+27;      <assemblyIdentity type=\"win32\" name=\"Microsoft.Windows.Common-Controls\" version=\"6.0.0.0\" processorArchitecture=\"x86\" publicKeyToken=\"6595b64144ccf1df\" language=\"*\"></assemblyIdentity>
+21;      <assemblyIdentity type=\"win32\" name=\"Microsoft.Windows.Common-Controls\" version=\"6.0.0.0\" processorArchitecture=\"x86\" publ
+15;.?AVCProcessTask@DlgEffectBase@@
+15;        <requestedExecutionLevel level=\"asInvoker\" uiAccess=\"false\"></requestedExecutionLevel>
+12;.?AVCResizeImageCommand@@
+12;.?AVFCEffectSoftPortrait@@
+12;.?AVCDrawTextCommand@@
+12;.?AV?$DlgEffectThreeSlider@VFCEffectSoftPortrait@@@@
+10; Type Descriptor'
+10;Paint.NET v2.64
+10;Paint.NET v2.6%
+9;.?AV?$DlgEffectSingleSlider@VFCEffectPosterize@@@@
+9;.?AVFCEffectGetHistogram@@
+9;.?AVFCEffectPosterize@@
+9; constructor or from DllMain.
+7;  <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">
+7;8,:0:4:8:<:T:X:\\:
+7;.?AV?$DlgEffectSingleSlider@VFCEffectRaiseFrame@@@@
+7;.?AVFCEffectExportAscII@@
+7;.?AVFCEffectRaiseFrame@@
+7;:$:(:0:H:X:\\:`:h:
+7;:/:;:A:M:\\:b:k:w:
+7;9O:T:\\:q:v:~:
+7;:8:<:@:D:H:\\:l:x:|:
+6;DINGXXPADDING
+6; Base Class Descriptor at (
+6; Class Hierarchy Descriptor'
+6;;!CMD\\GM
+6;icKeyToken=\"6595b64144ccf1df\" language=\"*\"></assemblyIdentity>
+5; Complete Object Locator'
+5;EEEAAAA3345
+5;VjFZjd3
+4;Regserver
+4;  </trustInfo>
+4; delete[]
+4;.?AVFCObjGraph@@
+4;R.MKM+
+4;> >^>}>
+4;.?AVFCEffectColorBalance@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectIllusion@@@@
+4;.?AVDlgEffectTexture@@
+4;.?AVFCEffectLensFlare@@
+4;.?AVDlgEffectSharpen@@
+4;.?AVFCImageCodec_Gdiplus@@
+4;9LRfA\\!
+4;HtgHtTH
+4;2%2T2t2
+4;.?AVDlgEffectCustom@@
+4;.?AV?$DlgEffectTwoSlider@VFCEffectHueSaturation@@@@
+4;.?AVFCEffectShift@@
+4;.?AVFCImageEffect@@
+4;.?AVCMy002Doc@@
+4;1/2H2`2
+4;.?AVDlgEffectFillGrid@@
+4;.?AVCInputSlider@DlgEffectColorLevel@@
+4;.?AVCMy002View@@
+4;2R4a4q4
+4;.?AVFCEffectConvolute@@
+4;.?AVDlgEffectEmboss@@
+4;.?AVDlgEffectShadow@@
+4;.?AVFCEffectPencilSketch@@
+4;.?AVFCEffectFillBackGround@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectBulge@@@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectMosaic@@@@
+4;wFbgi#[
+4;=.=Q=u=
+4;.?AV?$DlgEffectTwoSlider@VFCEffectBlur_Motion@@@@
+4;=/=L=W=
+4;  </dependency>
+4;.?AVCThumbLayout@DlgEffectLib@@
+4;8$8T8X8x8
+4;2,2<2@2P2T2X2\\2`2d2h2l2t2
+4;.?AVDlgEffectSupernova@@
+4;.?AV?$DlgEffectTwoSlider@VFCEffectWave@@@@
+4;.?AVCColorSlider@DlgEffectColorBalance@@
+4;.?AV?$DlgEffectThreeSlider@VFCEffectSoftGlow@@@@
+4;.?AVFCImageCodec@@
+4;.?AVDlgEffectColorBalance@@
+4;.?AVFCEffectThreshold@@
+4;.?AVFCEffectBlur_Radial@@
+4;.?AVFCEffectTileReflection@@
+4;0 0,0H0T0p0
+4;vvMw%RI)
+4;.?AV?$DlgEffectTwoSlider@VFCEffectRibbon@@@@
+4;.?AVCWndTransparencySlider@@
+4;;H<X<d<h<
+4;3,3D3`3d3h3t3x3
+4;.?AVCFillShadowImage@DlgEffectShadow@@
+4;.?AVFCImageCodecFactory_Gdiplus@@
+4;1,2J2Q2
+4;.?AVDlgEffectNoisify@@
+4;.?AVCWndTopTool@@
+4;.?AVCEffectCreateHalo@FCEffectSmoothEdge@@
+4;.?AVFCEffectSmoothEdge@@
+4;7;8k8}8
+4;.?AVFCTrackMouseHover@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectOldPhoto@@@@
+4;.?AVFCEffectBlinds@@
+4;.?AVFCEffectBrightnessContrast@@
+4;.?AVDlgModalBase@@
+4;?\\\\\\\\\\\\
+4;1 1$1(1,10181P1`1d1h1l1p1t1x1
+4;.?AVDlgEffectOilPaint@@
+4;? ?$?(?,?0?4?L?h?l?
+4;.?AVDlgEffectBase@@
+4;.?AVCEffectThumb@DlgEffectLib@@
+4;.?AVFCEffectAdjustRGB@@
+4;.?AVFCEffectFillGrid@@
+4;.?AVFCEffectIllusion@@
+4;.?AVFCEffectBlur_Gauss@@
+4;.?AVCEffectList@DlgEffectLib@@
+4;:@:P:a:
+4;< <8<@<X<`<h<p<|<
+4;1(20242L2P2l2p2x2
+4;.?AVDlgEffectLib@@
+4;.?AVFCFilterBase@@
+4;: :(:@:D:\\:l:p:t:
+4;PjohxXG
+4;}qglE~;;
+4;.?AVDlgEffectLensFlare@@
+4;.?AVCWndBottomStatus@@
+4;7(7.7N7v7
+4;vVW9E
+4;.?AVFCEffectRotate90@@
+4;.?AVCStatusProgress@@
+4;URPQQh,dE
+4;.?AVFCEffectInvert@@
+4;.?AVFCEffectMirror@@
+4;cZWY2jD
+4;0WGXE1Y4
+4;.?AVFCEffectGamma@@
+4;.?AUCThumbPreview@DlgEffectShadow@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectBlur_Radial@@@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectGamma@@@@
+4;.?AV?$DlgEffectThreeSlider@VFCEffectUNSharpMask@@@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectBlur_Zoom@@@@
+4;.?AVCWndPreviewCtrl@DlgEffectSupernova@@
+4;.?AVCMy002App@@
+4;888@8T8d8x8
+4;.?AVFCListWindow@@
+4;.?AVDlgImageSize@@
+4;.?AVFCImageCodecFactory@@
+4;>;>A>M>
+4;.?AVFCEffect3DGrid@@
+4;.?AVFCEffectUNSharpMask@@
+4;.?AVFCEffectAutoContrast@@
+4;HVWt;HHt0Ht&HHt
+4;.?AVFCEffectBlur_Motion@@
+4;.?AVFCEffectTwist@@
+4;.?AVDlgEffectColorTone@@
+4;ePIU[/z
+4;.?AVFCObjImage@@
+4;z/)=lhnPPF|
+4;3!3%3)3-3135393=3A3E3I3M3Q3U3Y3]3a3e3i3
+4;pCsD91&
+4;.?AVCWndThumb@DlgOpenImage@@
+4;.?AVFCEffectFillColor@@
+4;.?AVCWndColorButton@@
+4;5M6e6}6
+4;.?AVCOutputSlider@DlgEffectColorLevel@@
+4;.?AVFCEffectWave@@
+4;.?AVFCEffectColorLevel@@
+4;.?AVFCEffectAutoColorLevel@@
+4;AQVjdZRX
+4;.?AVFCEffectColorTone@@
+4;.?AVFCEffectHueSaturation@@
+4;.?AVFCEffectRibbon@@
+4;.?AVDlgEffectVideo@@
+4;.?AVDlgOpenImage@@
+4;.?AVFCEffectPremultipleAlpha@@
+4;:G:R:c:n:
+4;hcyQlL.
+4;.?AVFCButtonBase@@
+4;.?AVFCEffectRotate270@@
+4;.?AVFCEffectEmboss@@
+4;.?AV?$DlgEffectTwoSlider@VFCEffectBrightnessContrast@@@@
+4;.?AVFCEffectFlip@@
+4;5,5<5@5P5T5X5\\5`5d5h5l5t5
+4;.?AV?$DlgEffectTwoSlider@VFCEffectTileReflection@@@@
+4;.?AVFCEffectNoisify@@
+4;.?AVFCEffectReduceNoise@@
+4;?$?D?L?p?|?
+4;0$0(080<0L0P0T0X0\\0`0d0h0l0t0
+4;.?AVCWndPreviewCtrl@DlgEffectLensFlare@@
+4;u;y;};
+4;.?AVCHueSlider@DlgEffectColorTone@@
+4;.?AVFCEffectBilinearDistort@@
+4;AABBOu
+4;040Q0q0
+4;9*9<9R9
+4;.?AVFCEffectBlur_Zoom@@
+4;3@:D:H:L:P:T:X:\\:`:d:h:l:p:t:x:|:
+4;243=3V3^3
+4;1,1W1z1
+4;<IDAT(
+4;>OFRea\\
+4;;(;4;l;
+4;.?AV?$DlgEffectTwoSlider@VFCEffectTwist@@@@
+4;.?AVFCEffectSharp@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectThreshold@@@@
+4;`PhnQ!6
+4;.?AVFCEffectBulge@@
+4;.?AVFCEffectRipple@@
+4;lFqdW!
+4;.?AVDlgEffectRipple@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectSmoothEdge@@@@
+4;  <dependency>
+4;.?AVFCEffectOilPaint@@
+4;.?AVFCEffectAutoColorEnhance@@
+4;.?AVFCProgressObserver@@
+4;.?AVFCEffectSupernova@@
+4;.?AVFCEffectVideo@@
+4;.?AVFCImageProperty@@
+4;.?AVFCEffectHalftoneM3@@
+4;.?AVCEffectFindEdge@FCEffectSmoothEdge@@
+4;saTSWVh
+4;.?AVFCEffectSplash@@
+4;.?AVDlgSaveImage@@
+4;DIDAT8
+4;tMHt?Ht4Ht+
+4;303\\3x3
+4;DJUA$5^
+4;.?AVDlgEffectBlurGauss@@
+4;.?AV?$DlgEffectThreeSlider@VFCEffectAdjustRGB@@@@
+4;1 1$1(1,1014181<1D1\\1l1p1t1|1
+4;JcfH|\\H
+4;.?AVFCEffectMosaic@@
+4;.?AV?$DlgEffectTwoSlider@VFCEffectPencilSketch@@@@
+4;=4=\\=|=
+4;.?AVDlgEffectColorLevel@@
+4;.?AVFCEffectOldPhoto@@
+4;.?AVFCEffectFillPattern@@
+4;.?AVFCEffectLUT@@
+4;.?AVFCEffectSoftGlow@@
+4;.?AVDlgEffect3DGrid@@
+4;<,<0<@<D<H<P<h<l<
+4;4 4;4Q4
+4;50V0d0
+4;=)=V=y=
+4;.?AVDlgEffectBlinds@@
+4;;,;0;@;D;H;L;P;X;p;t;
+4;D$@+|$
+4;.?AV?$DlgEffectSingleSlider@VFCEffectSplash@@@@
+4;.?AVFCEffectAddShadow@@
+4;.?AVFCEffectSolarize@@
+4;uKwX['Y<
+4;.?AVFCListItem_Base@@
+4;.?AV?$DlgEffectSingleSlider@VFCEffectSolarize@@@@
+4;.?AVCWndPaletteSlider@@
+4;1$141H1\\1h1p1
+4;8 8(8@8H8l8x8
+4;.?AVFCLayout_HandlerBase@@
+4;KxKl$'/
+4;.?AV?$DlgEffectSingleSlider@VFCEffectShift@@@@
+3; delete
+3;8,8<8@8P8T8X8\\8`8d8h8l8t8
+3;>(>,><>@>D>H>L>P>T>X>`>x>
+3;8R8p8|8
+3;:(:x:~:
+3;<<<X<x<
+3;=(=8=<=L=P=`=d=h=l=p=t=x=|=
+3;?'?3?H?
+3;>,>T>t>
+3;;$;D;L;`;l;t;
+3;9,909@9D9T9X9\\9`9d9h9l9t9
+3;747]7x7
+3;4\"4Z4{4
+3;1,2O2r2
+3;2'2,2@2
+3;;><`<{<
+3;0$0-02080B0K0V0b0g0w0|0
+3;1)272I2T2
+3;7,7<7@7P7T7d7h7l7p7t7x7|7
+3;7(7<7P7\\7d7|7
+3;>2?L?T?
+3;04080T0l0
+3;6 686@6L6l6x6
+3;:S:a:q:
+3;t[9^ tV
+3;4 4X4x4
+3;3Y3^3h3
+3;3 3<3h3
+3;8-9K9~9
+3;<8<s<|<
+3;4,4D4`4d4
+3;?QQQQQQ
+3;7 7$7(7,70747L7
+3;<$<Q<\\<n<
+3;242<2L2\\2d2l2t2
+3;444D4H4X4\\4`4d4h4l4p4t4|4
+3;This indicates a bug in your application. It is most likely the result of calling an MSIL-compiled (/clr) function from a native
+3;999B9N9
+3;4-494F4j4|4
+2;      </requestedPrivileges>
+2;      <requestedPrivileges>
+2;\\Z6`R+j
+2;6$6(686<6L6P6`6d6h6p6
+2;:,:=:E:U:f:
+2;3(303H3P3X3d3
+2;D$T+D$LP
+2;4$4,4D4L4T4`4
+2;6 6(6@6P6T6X6\\6`6h6
+2;;0;P;h;
+2;4$44484<4@4D4H4P4h4x4|4
+2;dIDAT8
+2;50585@5H5P5X5`5h5t5
+2;< <0<4<D<H<X<\\<`<d<h<p<
+2;5,636H6
+2;7 7$74787H7L7P7T7X7\\7`7d7l7
+2;?,?<?@?P?T?X?\\?`?d?h?l?t?
+2;\\c UGi
+2;lYIeH5
+2;\\q\\cmm
+2;7(7,7<7@7D7H7P7h7l7
+2;rIDAT8
+2;3$3(383<3@3D3H3L3P3T3\\3t3
+2;1$1(1D1H1h1
+2; !\"#U
+2;rwST57
+1; new[]
+1;<(<:<A<J<V<
+1;000(1G1U1
+1;an0R-QU
+1;0/1:1K1W1_1e1t1}1
+1;sH\\Qux
+1;|S;L$<}M
+1;>`e-BEEW
+1;B\\/( 5
+1;1+1v1~1
+1;:.:Z:`:
+1;;(;1;F;S;`;j;z;
+1;[?pM}a
+1;b7/\\{,
+1;L0R0[0b0g0
+1;=8=@=T=l=x=
+1;2$202X2`2d2h2l2t2
+1;:(;C;S;Z;
+1;ew=y7 
+1;8}8>9I9v9{9
+1;jdX+CXjd
+1;0'12181V1
+1;^8{9u Va(I
+1;b0b2j2{2
+1;6S7`7u7
+1;c1mr}0E
+1;1)2q2 343F3^3
+1;707@7D7T7X7h7l7t7
+1;4[5(6.666D6L6
+1;8QS^h&
+1;4B5H5s5{5
+1;8+9`9m9
+1;5!555A5X5
+1;c5@7#6>~
+1;_()f_\\iL2
+1;9\\$(tZ9\\$,tT
+1;848Z8u8
+1;;A;Y;d;
+1;9^:i:q:
+1;93:;:]:
+1;AQVjdZ
+1;/+&s2;
+1;8QcHCX
+1;:@;[;r;~;
+1;/'6fUx
+1;8s;6;S
+1;7-7<7I7T7]7g7l7|7
+1;B<+N)R
+1;1P2`2p2t2x2|2
+1;D$`+D$XPV
+1;6*6d6l6y6
+1;; YG(.
+1;00)030
+1;?(?,?0?4?8?<?@?D?H?P?h?x?|?
+1;=[sm#n
+1;4%575Q5
+1;U)PM6`r
+1;>DXXFp
+1;H2RGUJ
+1;9*989>9a9h9
+1;6'6J6}6
+1;tZhXTG
+1;P@~ZT.
+1;5'5`5g5m5z5
+1;3)3>3\\3
+1;6$6S6y6
+1;nV1&7n
+1;?K?U?]?t?~?
+1;2H3U3c3p3
+1;4(54585D5T5`5p5|5
+1;lXL7T*[
+1;5D;dAwA
+1;7S7X7^7b7h7l7r7v7|7
+1;i\"{%IP\\
+1;8qY<*r
+1;0(1V1m1#2P2]2y2
+1;a0cnUw
+1;kvbgNi
+1;888H8X8\\8`8d8h8l8p8t8x8|8
+1;+%Ku'&
+1;;$;<;h;l;p;t;x;|;
+1;> >)>6><>V>g>m>~>
+1;v`j'o]
+1;neS9i_
+1;.7Cf% c
+1;819L9|9
+1;1T2Z2s2y2!3,3k3
+1;>[c@yH
+1; >2lgA
+1;q26E+g
+1;D$$F;t$P
+1;J<(3mn
+1;0&2V2|2d4
+1;FdsNq]
+1;Rich@M
+1;:I:k:t:}:
+1;[B)pKD
+1;1tF+Jd(
+1;XNU@4V
+1;4*5W5]5
+1; j?hPaG
+1;6!63686C6t6K7m7z7
+1;@bgn[p
+1;n6K\"^NE\"
+1;191Y1`1
+1;2(353;3P3n3t3|3
+1;V=&)d;
+1;>(>2>B>G>Q>]>g>q>}>
+1;eHp:9K
+1;9#959C9Q9b9v9
+1;n=Kr6hm
+1;,}tE<3
+1;9(909P9X9\\9`9d9l9
+1;3-343A3d3u3|3
+1;}9,rvD
+1;Efl2*1B&
+1;696B6K6X6~6
+1;g47#Q@F+X
+1;VWj ^j<_t
+1;`0@p9H
+1;1Z2`2j2
+1;]uVd~x
+1;=U=\\=w=|=
+1;6I6c6|6
+1;363m3w3a4
+1;:Bd8#|
+1;6-626;6M6a6{6
+1;;,<S=[=m=
+1;[F*8&r.
+1;8;8i8s8{8
+1;6z7{8,9
+1;N<7Sd1/}
+1;2Y3i3{3
+1;112J2Y2r2
+1;:3CZT0m:
+1;;+;<;P;x;
+1;>(?2?>?G?
+1;1$1L1T1^1k1s1y1
+1;JI,?jdd
+1;7 7(7,7074787<7@7D7H7L7P7T7X7\\7`7d7h7l7p7t7
+1;Q<3~@tp+
+1;g G(Be
+1;6 6Y6j6t6
+1;=$=(=,=0=8=P=T=l=|=
+1;4dzh=8
+1;? ?`?p?
+1;?1?J?f?o?u?~?
+1;6B7T7r7
+1;;<;D;H;L;P;T;\\;x;
+1;JP;`xc
+1;7%,?x*(
+1;K\"_U.v
+1;0B0g0x0}0
+1;2Iz;w]
+1;5.666X6
+1;\"0*00050E0J0R0X0]0d0j0o0v0|0
+1;<E=S=j=
+1;0&0;0@0K0|0
+1;:l<4=F=P=Z=
+1;;$;0;4;8;<;@;D;H;L;P;T;X;\\;`;d;h;l;p;t;x;|;
+1;>a?e?i?m?q?u?y?}?
+1;A`.:xR
+1; 0%7i8
+1;\"K6}c^
+1;T.v(Nf
+1;2Q87(X
+1;Dd\"d6A
+1;jN?N,`
+1;?V c4E
+1;?$?+?3?D?Q?y?
+1;:\":':/:?:
+1;<-<C<g<n<
+1;ggg|||l
+1;W3TS@v
+1;t$H;t$P
+1;D$<+D$49D$
+1;8m9E:|:6;
+1;^~$SY$
+1;pn7PM\\
+1;3[4g4~4
+1;'*w:)tvp
+1;7T7Y7`7e7l7q7
+1;6JJpd+
+1;8\"8&8*8.82868:8>8B8F8J8N8R8V8Z8
+1;3.3`3t3
+1;=B>S>a>o>}>
+1;.p-V+aB
+1;5(54585T5l5
+1;9^9l9#:F:
+1;NFE&L\\
+1;5:6:7B7
+1;Wb0f!n
+1;0 0<0X0d0h0p0t0
+1;<4<=<z<2=>=Y=_=
+1;W{8IBD
+1;1N2Y2d2o2Q3Y3s3B4
+1;t/hhTG
+1;5(5@6X7p8
+1;2=6D6a6l6
+1;LB;Y$qY
+1;2S3Y3t3y3
+1;;,;3;9;K;S;^;
+1;dmKs+(
+1;><?T?p?t?
+1;vlUb$.
+1;[88.['
+1;9!<,<B<+>8>b>
+1;ni:ez'
+1;5*6>6w6x768
+1;mMxU#V
+1;IDAT8Ou
+1;YQPjdj
+1;?!?1?_?q?
+1;747T7w7
+1;=eLMI5
+1;525<5B5H5c5
+1;TZ;y&@
+1;6R6{7D8Y8q8
+1;:$:,:@:H:L:P:X:`:h:|:
+1;5]KQ,j)
+1;2@2H2P2d2p2x2
+1;Re|%AK
+1;;s0+_e
+1;3c365A5I5d5q5
+1;6 6$6(6,6064686<6@6H6L6P6T6X6\\6`6d6h6l6p6t6x6
+1;0t1/2H2
+1;;.<8<P<W<a<i<v<}<
+1;V_i[.B
+1;O\"Ij79
+1;9'9r9w9
+1;9'979\\9y9
+1;35astlo
+1;;1<;<]<
+1;>4?;?x?
+1;ey|X`p
+1;6Qbz>B
+1;\"kQDh(
+1;UCyQi%
+1;bks42@}
+1;7$7@7|7
+1;;F=!>7>
+1;Z*Y<Ff
+1;D$ xa;D$8}[
+1;0X^`uhi48
+1;3*4M4s4
+1;3A4O4a4v4
+1;4N4Y4i4n4
+1;=*i^0af
+1;2#2+20292Y2f2l2r2x2~2
+1;4lw<4=
+1;9GDuR9O@uM
+1;k#(/@M
+1;;\";3;@;
+1;>8axWR
+1;: :(:L:`:h:p:
+1;4.4K4Z4r4
+1;8 8$8(8,8084888<8@8D8H8L8P8T8p9t9x9|9
+1;wqw{8%
+1;7A8[8p8x8
+1;31w@f'
+1;GGG<??
+1; CF\\``
+1;8.8Q8l8
+1;/o|M~)#g
+1;273U3f3l3}3
+1;\"Y.z:N
+1;^6\"H?e1(c
+1;H7N<>OJ%
+1;5#5)575@5O5T5^5l5
+1;7\"7C7J7
+1;I1:]MJQ
+1;L0 1I132J2\\2.383E3`3g3
+1;HeVuU-
+1;0%1;1|1
+1;444@4`4h4|4
+1;h-#ydi
+1;PN Jst
+1;_Rc!)VX
+1;7\"737H7]7n7
+1;0$0*0W0)1f1|1
+1;?+?9?n?{?
+1;Hi9UR)Z
+1;>$>/>4>?>D>O>T>a>o>u>
+1;PUp\"@\"
+1;>lb>YP
+1; johxXG
+1;TQM`-p
+1;1(14181<1@1P1T1X1\\1`1d1h1l1
+1;#010v0
+1;C.oeMG
+1;364>4d4
+1;>%>U>h>
+1;374[4e>
+1;OKd<QA
+1;6v8'<)?
+1;|$@ u5f
+1;5#5,565A5F5W5l5w5
+1;Kc6;F1Z
+1;$dv+wG
+1;012345679999999999999999999998
+1;='=u=}=
+1;5L5X5o5
+1;=&=-=3=9===C=U=`=g=m=s=w=}=
+1;G Wh`%G
+1;R#_ ^]
+1;Vj2Zjd3
+1;>$?)?}?
+1;;\\<N=`=t=
+1;3'4F4a4
+1;~or\"l7l
+1;6f7b8z8
+1;zsZ.qa
+1;>C2g6r
+1;:(:N:|:
+1;hQE`=U
+1;L SNE<C
+1;j,h0#I
+1;6W7E8y8
+1;6(6,6D6T6X6\\6`6d6l6
+1;< <@<H<P<X<`<
+1;xS=\\A)]
+1;}Qaf[?
+1;Pj?hPaG
+1;2#3J3S3\\3h3t3
+1;Wn}F9K
+1;`.HSr5v
+1;>(>X>y>
+1;t(]sYJ3
+1;k.?ft$
+1;Vj#ZjdX3
+1;=*=1=B=n=z=
+1;9IDAT8
+1;<)<3<F<j<
+1;:0:Z:h:
+1;]0&GW.a
+1;I2teD0.
+1;=(=E=P=`>s>
+1;@=b{Tg
+1;<'=H=r=x=
+1;y:L |Dq)
+1;6!616:6G6R6[6e6j6z6
+1;4(5?5N5y5
+1;t[J)=x
+1;:>:P:d:q:x:
+1;09zRkHt
+1;}wa^\"8
+1;=?3kCHvs
+1;>\">)>B>
+1;5*626G6R6
+1;122a2g2l2s2
+1;:1J1Q1X1J2
+1;>&>;>Q>|>
+1;1 1$1D1l1
+1;+g.:hp{
+1;D$<H9D$
+1;GgF}~q
+1;D$4+D$0Y
+1;N]yx=e
+1;9t$8~^
+1;.&A291
+1;3I3Y3x3~3
+1;Bae<Z#
+1;#dzNCx
+1;1#1(1>1_1m1t1~1
+1;&3/CC-
+1;6595b64144ccf1df
+1;Z4VuV:,
+1;DB[i|*
+1;<?<_<d<
+1;<I:]d$
+1;^0{pm1
+1;010G0P0[0c0
+1;E)d<uyD
+1;<;=F=K=
+1;j=MG]x'
+1;060B0J0Z0o0
+1;5<5I5n5{5
+1;8\"8(8.848;8E8b8s8}8
+1;!5rV_%
+1;979E9U9o9t9
+1;4\"474x4
+1;>AUVhV
+1;Jdq7p[=
+1;?#?)?:?g?z?
+1;ev 6xb/?
+1;6=6H6z6
+1;R[tkf#
+1;pM' i$
+1;0%050k0
+1;D$0+D$(PVVV
+1;405U5x5
+1;>3>I>_>g>
+1;EfO'FRE
+1;|7|F\\e,
+1;515=5T5
+1;3'4v4;5
+1;4$5/5<5
+1;5!565N5j5
+1;9 9$9(9<9@9P9T9d9h9l9p9t9x9
+1;<j9SNY+`'
+1;t#WWhl
+1;&'%t>o
+1;9\"929E9]9~9
+1;%b#'U&
+1;|Z;t$8}T
+1;9/:A:R:h:
+1;0I1O1W1e1K2
+1;;#;:;Q;X;
+1;A)$7_6Z
+1;&4/_xJ1
+1;4W5\\5g5|5
+1;7\"7/7;7Z7
+1;& PHn;8nP
+1;5>8:;$
+1;& |G5t
+1;@aLa1S
+1;}IDAT(
+1;; ;&;[;i;
+1;CMy002View
+1;3$4@4c4v4?:
+1;7$7V7\\7
+1;=#=2=<=K=_=
+1;p$Q%B/{t
+1;g?&$j)h
+1;H%XN`-y>
+1;Msj4Rqpb
+1;xW\\\\=<(}s
+1; ^*0f6
+1;l^z4S.w
+1;646@6x6
+1;262G2x2
+1;K<E50+
+1;W6SV|G
+1;;&;G;z;,<3<K<]<
+1;V`cZ,v
+1;gJy2r0
+1;142P2h2
+1;=Gx%Wf
+1;7:c`d}
+1;@:g}-}
+1;0 0*090F0L0V0e0
+1;n3V.q~
+1;A}`6aj
+1;0\"0*0A0K0S0j0t0|0
+1;< <;<Q<X<h<
+1;+L$0+D$4
+1;/\\<!)#]
+1;M$W+Of
+1;4-7Sm#
+1;(OFH<K
+1;U/`a2\"b
+1;@dWPQ3
+1;5^!geF
+1;T,$X9@.Pu
+1;~7.-I9A
+1;nF#f2=]
+1;;\";.;4;9;?;K;Q;U;[;_;e;i;n;s;x;};
+1;=)>7>R>X>
+1;g-yyDd
+1;>D>h>s>
+1;:+:4:J:
+1;1!171E1{1
+1;00181D1d1l1
+1;=(=1=>=I=[=n=y=
+1;%A5(XUp
+1;v(o$fe$
+1;0/1@3R3d3
+1;`Kjx7LP
+1;7S7e7q7
+1;8,~$Rg
+1;~(dUnZ
+1;7/8=;I;Y;c;
+1;202<2S2
+1;^\\jdX9E
+1;3A4d5,6A6M6
+1;2/2L3y3}3
+1;;!;*;2;R;
+1;</<E<&=
+1;0\"0X0e0{0
+1;!{hl$/O\\
+1;2y3;4L4\\4e4P5
+1;;ALtHh,
+1;535^5h5p5
+1;7>8P8i8O:
+1;2.2@2|2
+1;1A1T1l1~1
+1;8M8V8j8
+1;0)0e0s0|0
+1;>E>^>}>
+1;1Dt,;b
+1;9c9k9u9
+1;;,;4;@;U;];e;v;
+1;6(6D6T6i6
+1;5$6<6C6
+1;kF}+!'
+1;0O1j1u1
+1;*0B0M0q0z0
+1;<(<9<M<\\<
+1;<^<f<s<
+1;8'80858@8T8n8{8
+1;d&CNG\"
+1;,ce#gI
+1;;,;0;@;D;T;X;\\;`;d;h;l;p;x;
+1;>,>Z>_>
+1;;_:U_<
+1;\"Bb: THhgd
+1;9#9H9N9Y9e9z9
+1;3!4.4_4l4
+1;g)yt@Y
+1;0zFRQ>
+1;? ?$?(?,?0?4?8?<?@?D?H?L?P?T?t?x?
+1;8e8j8u8
+1;: :$:(:0:L:p:x:|:
+1;6I'atu*
+1;9(929X9a9y9
+1;X.p6.xJ
+1;9C:K;z;
+1;fYlt#<
+1;m?E#\"P0
+1;V$L_n^
+1;A-\\HEQT
+1;?9?F?R?Z?b?n?
+1;A_dh<2
+1;s4$6ohU
+1;=2>B>I>g>o>
+1;?W)pxX
+1;;$;5;:;@;P;U;];j;r;{;
+1;IvGbSp
+1;h4 \"PU
+1;T@\\DcY
+1;!q/uo)
+1;2(2/272<2@2D2m2
+1;#od$:OY
+1;:!;9;c;
+1;5#5*505F5a5n5
+1;>4?Z?_?r?
+1;Fi,ozM,
+1;ue[dbg
+1;F4ywyL
+1;797X7t7
+1;8=>Xk8w
+1;|4;t$h}.
+1;D$<+D$4I
+1;6\"7[7h7G8V8
+1;95:W:]:f:o:y:
+1;7(818=8H8
+1;4*6=6D6O6U6`6e6y6
+1;5E6g6l6q6v6
+1;>*>4>d>
+1;<$<(<,<0<4<8<<<@<H<`<p<t<
+1;WDw2\"'Io)
+1;3U3G4l4l5
+1;5N7U7[7
+1;\"@qr@#
+1;*0(1?1\\1%2A2k2
+1;xxddu#
+1;5Z:N$D.8
+1;?d-4q|
+1;$TOByZ
+1;1'2,2M2R2u2
+1;2\"3)4F4l4
+1;9H9X9h9l9p9t9x9|9
+1;v4r{Ql
+1;0(000D0L0d0p0x0
+1;T$(Wj@hD
+1;-C\\ByB
+1;n+KYPy
+1;?$?<?@?X?h?l?p?t?|?
+1;3%3@3c3
+1;<'<X<g<v<
+1;;w;+<K<;=d=
+1;?2?U?~?
+1;; ;$;(;,;0;8;<;h<l<
+1;8 8$888<8L8P8`8d8t8x8|8
+1;8!979I9
+1;?!?<?|?
+1;J<NX|7
+1;;);O<b<
+1;`zaIszf
+1;=R=_=s=
+1;O+,Jg$2
+1;;%;0;a;j;
+1;3H3S3Y3i3r3
+1;0 0$0<0@0t1
+1;%N2j`r[@
+1;$a#@.|
+1;;);F;k;p;u;8<`<q<
+1;D$0+D$ PW
+1;!0H0U0S2
+1;5\\#;ArC
+1;2 282<2T2d2h2x2|2
+1;d&aQ7Ps
+1;K5j|EQ
+1;0*]7[w
+1;rm=,RU
+1;oLOK)u
+1;>>?h?m?
+1;pP1Zo&N
+1;;!;);G;O;
+1;7 7074787<7@7D7H7L7T7l7|7
+1;|6[jvg
+1;o3+)0K
+1;3PgOr*N
+1;A/i;[d:
+1;:3;@;T;~;
+1;\"Kt]%5
+1;pbP kb gx
+1;Z{=x6XG
+1;0 0^0n0}0c1
+1;MZ36m'
+1;im&sl;
+1;d$c\"E(
+1;e^B@t}
+1;:?w[H(
+1;6D7;8|8+9|9
+1;4!877p^}-1sC
+1;0B1]2u2
+1;y\"^CxD
+1;989X9`9t9|9
+1;Zu{)@ 
+1;5 5$5(5,5054585<5@5D5H5L5P5x5|5
+1;F>Z6{O\\
+1;tqYm0r
+1;B&=C84
+1;y}UK1!
+1;9&989=9H9y9
+1;5L23z#
+1;=H=X=p=
+1;;*</<y<
+1;#R+%9Q
+1;AxM;L$<}G
+1;*1c9{3V
+1;jd{4Zk%
+1;;*!:D4~
+1;ZPYDB$
+1;w:30LP'
+1;P<p|xM
+1;u*9} t
+1;@5bwnp
+1;4U5a5o5x5
+1;C8/qB|B
+1;7,8:8D8
+1;4'5c5w5
+1;=$=4=@=L=P=\\=l=x=
+1;0#0H0g0q0
+1;S)q&A\\t
+1;1P1\\1`1h1l1
+1;49??g4
+1;#7K!L(
+1;:S:d:i:p:
+1;:':=:H:]:r:
+1;.vXtmbD
+1;E2\"tUu
+1;4(4H4h4t4
+1;PJcjLD
+1;,E!F7BM
+1;Ib6Q;g
+1;929g9\":?:w:
+1;8 8(80888@8H8\\8d8|8
+1;556A6E6h6p6
+1;uk_6 B
+1;},a)!ZK
+1;.^0A\\5r
+1;LY]m=UUU
+1;20242L2P2
+1;4p;m|V
+1;`re1OU
+1;2;3B3G3T3
+1;(wO5xxcl
+1;;!<'<5<G<Y<|<
+1;D$,+D$(3
+1;CMy002Doc
+1;t$hPqG
+1;*<(*)IX
+1;1!1+181a1k1
+1;7U7g7S8h8v8
+1;8$969G9
+1;^>k!dG+
+1;tgS^:kE>
+1;CvjL~-
+1;0'1_1f1m1t1{1'2F2
+1;PZ;!J!5
+1;<4<8<X<\\<x<|<
+1;8\"9S9v9
+1;N7h9PI?g.
+1;?\"?&?*?.?2?6?:?T?e?
+1;>-?=?I?U?c?
+1;7\"8U8p8
+1;o}xe!>
+1;8 8@8H8P8X8`8h8p8|8
+1;)LjO}\\9
+1; Zv'U)
+1;~yUvBy
+1;;0;4;8;<;@;D;\\;t;
+1;G0.bd^
+1;353N3[3o3
+1;4X4b4|4
+1;YOB$`I{
+1;1(1014181<1@1D1H1L1P1T1`1|1
+1;5/6H6Y6
+1;3e495Y5f5
+1;%S{.@p
+1;/.X N+
+1;3,4J4`4
+1;5,565q5
+1;8`9}9};
+1;^Ts~W5 l
+1;<$=X=r=z=
+1;3!464n4u4
+1;^ENC_E
+1;gdj?#7
+1;D$X+D$PP
+1;5'znGG|
+1;7$7,7n7
+1;iKM`fm
+1;lfqO9S
+1;AQVj2Z
+1;30D0O0W0{0
+1;[n6'.|(IS
+1;:*!] G
+1;Hl0vD\"
+1;; ;e;s;
+1;0*1E1p1
+1;.fhO1K
+1;<-<G<D=
+1;^#h,.s
+1;667:7>7B7F7J7N7R7V7Z7^7b7f7l7w7
+1;Ul4?q9q
+1;2$202=2D2O2W2_2h2q2
+1;A`3Mws
+1;370Z^;=6
+1;2V3b3p3
+1;:$:w:}:
+1;516c6#7w7
+1;060i0v0
+1;101T1p1
+1;e!`,eh|[
+1;9\":3:K:
+1;5A6[6n6t6
+1;<(<,<X<\\<`<d<h<l<p<t<x<|<
+1;!\\\\>u^
+1;fHrPj 
+1;=6le(/v
+1;JWO2&E
+1;Tt<v@n
+1;?&?7?E?R?\\?f?p?z?
+1;;-;x;\"<=<J<X<s<
+1;0$0(0,0004080<0P0`0l0p0t0x0|0
+1;4.494B4Y4
+1;={1aw;!
+1;8 8$8(8,8084888<8@8D8H8L8P8T8X8\\8h8x8
+1;3\"rN9d
+1;-2LBU}
+1;2,2024282<2@2D2L2d2h2
+1;?SLSS3>
+1;|&;L$l} 
+0; Base Class Array'
+0;v WWWWSWhXG
+0;Ct9x<t9
+0;:(:,:0:4:8:<:@:H:`:p:t:
+0;.?AVPCL_Interface_ZoomScale@@
+0;.?AVFCEffectGrayscale@@
+0;.?AVCAmountSlider@DlgEffectColorTone@@
+0;0,00040<0T0X0p0
+0;?,?0?8?P?`?d?t?x?|?
+0;~WSPhlG
+0;.?AVFCFilterCatmullRom@@
+0;8$84888H8L8P8X8p8t8
+0;.?AVCArrowSliderBase@DlgEffectColorLevel@@
+0;5 5$5(505H5X5\\5`5d5l5
+0;</assembly>PAPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPADDINGXXPADDINGPAD
+0;|$(+|$ 
+0;YYf9>u
+0;.?AVFCAutoInitGDIPlus@@
+
+
+WIDE Strings
+------------------------------------------------------------------------
+19;002.exe
+17;http://www.phoxo.com/en/
+17;phoxo.ascii_%d.txt
+13;Bf:\\dd\\vctools\\vc7libs\\ship\\atlmfc\\src\\mfc\\winfrm.cpp
+13;Cf:\\dd\\vctools\\vc7libs\\ship\\atlmfc\\src\\mfc\\auxdata.cpp
+10;SAVE_ERROR_NO_AUTHORITY
+10;All Supported Image|*.bmp; *.jpg; *.jpeg; *.gif; *.tif; *.tiff; *.png|All Files (*.*)|*.*||
+10;SAVE_ERROR_NO_AUTHORITY=Save file fails, no permission to save in this directory
+9;Dcombobox
+9;IDD_EFFECT_POSTERIZE
+9;2=Magenta
+9;[IDD_EFFECT_POSTERIZE]
+8;hgfhgfhgfhgf
+8;fhghfhg
+7;Gcustom filters (*.ACF)|*.acf||
+7;IDD_EFFECT_SOFT_PORTRAIT
+7;IDD_EFFECT_RAISEFRAME
+7;SAVE_ERROR_FAIL
+7;SAVE_ERROR_VIOLATION
+7;UNKNOW_IMAGE=Invalid or unsupported image file format
+7;SAVE_ERROR_FAIL=Save file fails
+7;SAVE_ERROR_VIOLATION=Save file fails, other programs are using this file
+7;[IDD_EFFECT_SOFT_PORTRAIT]
+7;[IDD_EFFECT_RAISEFRAME]
+7;0=Windows Bitmap (*.bmp)|*.bmp|JPEG Image (*.jpg)|*.jpg|GIF Image (*.gif)|*.gif|PNG Image (*.png)|*.png|TIFF Image (*.tif)|*.tif||
+7;1=Very large size , At least take %d Mb memory , Do you want to continue to create ?
+7;My002.Document
+7;002.Document
+6;Bmdiclient
+6;Hbutton
+6;1=Dark
+6;26039=&Auto Color Level
+6;26048=Au&to Contrast
+6; Counter-C&lockwise
+5;BReBarWindow32
+5;Set width to 2 is scan line effect
+4;command
+4;Amsctls_statusbar32
+4;h4CzROhtj}FiFZm3u{@0}@4kNqn?K6$B%p7cx
+4;MENU_TEXT
+4;IDD_EFFECT_BLUR
+4;IDD_EFFECT_SHARP
+4;IDD_EFFECT_NOISIFY
+4;IDD_EFFECT_OILPAINT
+4;IDD_EFFECT_EMBOSS
+4;IDD_EFFECT_TEXTURE
+4;IDD_EFFECT_3DGRID
+4;IDD_EFFECT_RIPPLE
+4;IDD_EFFECT_VIDEO
+4;IDD_EFFECT_COLOR_TONE
+4;IDD_EFFECT_COLOR_LEVEL
+4;GIDD_EFFECT_COLOR_BALANCE
+4;IDD_EFFECT_LENSFLARE
+4;IDD_EFFECT_SUPERNOVA
+4;GIDD_EFFECT_BLINDS
+4;IDD_EFFECT_FILLGRID
+4;GIDD_EFFECT_CUSTOM
+4;IDD_IMAGE_RESIZE
+4;GUNKNOW_IMAGE
+4;Copy to clipboard success!
+4;IDD_EFFECT_BRIGHTNESS
+4;IDD_EFFECT_HUE
+4;IDD_EFFECT_GLOW
+4;IDD_EFFECT_ADJUSTRGB
+4;IDD_EFFECT_GAMMA
+4;IDD_EFFECT_MOSAIC
+4;IDD_EFFECT_SMOOTHEDGE
+4;IDD_EFFECT_BLURMOTION
+4;IDD_EFFECT_BLURZOOM
+4;IDD_EFFECT_BLURRADIAL
+4;IDD_EFFECT_USM
+4;IDD_EFFECT_SPLASH
+4;IDD_EFFECT_PENCILSKETCH
+4;IDD_EFFECT_SHIFT
+4;IDD_EFFECT_RIBBON
+4;IDD_EFFECT_BULGE
+4;IDD_EFFECT_TWIST
+4;IDD_EFFECT_ILLUSION
+4;IDD_EFFECT_WAVE
+4;IDD_EFFECT_GLASSTILE
+4;IDD_EFFECT_THRESHOLD
+4;IDD_EFFECT_SOLARIZE
+4;IDD_EFFECT_OLDPHOTO
+4; ( %d , %d )
+4;Actual View
+4;x %d View
+4;1 / %d View
+4;Effect Lib
+4;HIDD_EFFECT_SHADOW
+4;AIDD_SAVE_IMAGE
+4;IDOK=OK
+4;[IDD_EFFECT_BRIGHTNESS]
+4;1=Brightness
+4;2=Contrast
+4;[IDD_EFFECT_HUE]
+4;2=Saturation
+4;[IDD_EFFECT_COLOR_TONE]
+4;[IDD_EFFECT_GLOW]
+4;2=Brightness
+4;3=Contrast
+4;[IDD_EFFECT_ADJUSTRGB]
+4;[IDD_EFFECT_GAMMA]
+4;[IDD_EFFECT_COLOR_LEVEL]
+4;7=Channel :
+4;[IDD_EFFECT_COLOR_BALANCE]
+4;11=Midtone
+4;12=Highlight
+4;20=Preserve Luminosity
+4;[IDD_EFFECT_MOSAIC]
+4;[IDD_EFFECT_SMOOTHEDGE]
+4;[IDD_EFFECT_SHADOW]
+4;2=Opacity
+4;[IDD_EFFECT_BLUR]
+4;[IDD_EFFECT_BLURMOTION]
+4;[IDD_EFFECT_BLURRADIAL]
+4;[IDD_EFFECT_BLURZOOM]
+4;[IDD_EFFECT_USM]
+4;3=Threshold
+4;[IDD_EFFECT_SHARP]
+4;0=Lightly
+4;2=Heavily
+4;[IDD_EFFECT_NOISIFY]
+4;[IDD_EFFECT_OILPAINT]
+4;[IDD_EFFECT_EMBOSS]
+4;4=Orientation
+4;[IDD_EFFECT_SPLASH]
+4;[IDD_EFFECT_TEXTURE]
+4;1=Opacity
+4;13=Leather
+4;14=Sandstone
+4;[IDD_EFFECT_3DGRID]
+4;[IDD_EFFECT_PENCILSKETCH]
+4;[IDD_EFFECT_SHIFT]
+4;[IDD_EFFECT_RIBBON]
+4;1=Amplitude
+4;2=Frequency
+4;[IDD_EFFECT_BULGE]
+4;[IDD_EFFECT_TWIST]
+4;[IDD_EFFECT_ILLUSION]
+4;[IDD_EFFECT_WAVE]
+4;1=Wavelength
+4;2=Amplitude
+4;[IDD_EFFECT_RIPPLE]
+4;2=Triangle
+4;[IDD_EFFECT_LENSFLARE]
+4;0=Click to set halo position
+4;[IDD_EFFECT_SUPERNOVA]
+4;[IDD_EFFECT_GLASSTILE]
+4;[IDD_EFFECT_BLINDS]
+4;2=Horizontal
+4;[IDD_EFFECT_THRESHOLD]
+4;[IDD_EFFECT_SOLARIZE]
+4;[IDD_EFFECT_OLDPHOTO]
+4;[IDD_EFFECT_FILLGRID]
+4;[IDD_EFFECT_VIDEO]
+4;1=Staggered
+4;[IDD_EFFECT_CUSTOM]
+4;[IDD_SAVE_IMAGE]
+4;1=32-bit ( with alpha )
+4;2=Quality
+4;3=Reserve EXIF
+4;11= ( Worst )
+4;16= ( Higher )
+4;17= ( Higher )
+4;[IDD_IMAGE_RESIZE]
+4;5=Fixed Ratio
+4;6=Ratio :
+4;7=Ratio :
+4;8=Width :
+4;9=Height :
+4;50=Quality
+4;[MENU_TEXT]
+4;26009=Black &White
+4;26003=&Negative
+4;26050=Auto &Enhance
+4;26021=Rotate 90
+4; C&lockwise
+4;26023=Rotate 90
+4;26052=&Despeckle
+4;26049=&Posterize...
+4;s_3_1=&Distort
+4;26028=&Halftone
+4;26067=Draw &Text
+4;P&rint Setup...
+4;&Effect Lib
+4;(c) PhoXo.  All rights reserved.
+3;System
+3;SAMSUNG
+3;AUxTheme.dll
+3;G(null)
+3;GLocal AppWizard-Generated Applications
+2;ForceRemove
+2;NoRemove
+2;BCLSID
+2;C:\\Program Files (x86)\\Microsoft Visual Studio 9.0\\VC\\atlmfc\\include\\afxwin2.inl
+2;26066=Soft &Portrait...
+2;26057=3D &Frame...
+1;Cshell32.dll
+1;C:\\Program Files (x86)\\Microsoft Visual Studio 9.0\\VC\\atlmfc\\include\\afxwin1.inl
+1;As_3_0
+1;Size :
+1;1=Color
+1;1=Soft
+1;3=Warm
+1;2=Green
+1;3=Blue
+1;1=Gamma
+1;5=Input
+1;10=RGB
+1;0=Cyan
+1;3=Green
+1;4=Yellow
+1;5=Blue
+1;10=Shadow
+1;1=Size
+1;0=Blur
+1;3=Offset
+1;1=Speed
+1;2=Angle
+1;1=Level
+1;1=Radius
+1;2=Amount
+1;1=Normal
+1;3=Level
+1;0=Amount
+1;0=Size
+1;1=Rough
+1;4=High
+1;0=Right
+1;2=Left
+1;3=Bottom
+1;10=Brick
+1;15=Weave
+1;16=Mat
+1;17=Grid
+1;18=Dot
+1;2=Depth
+1;3=Large
+1;4=Medium
+1;5=Small
+1;6=High
+1;7=Medium
+1;1=Pen Size
+1;2=Rough
+1;1=Twist
+1;2=Size
+1;1=Amount
+1;0=Length
+1;3=Sine
+1;2=Spokes
+1;0=Width
+1;0=Type
+1;2=Triped
+1;3=3 x 3
+1;2=Offset
+1;3=Load
+1;4=Save
+1;12= ( Low )
+1;13= ( Low )
+1;14= ( Mid )
+1;15= ( Mid )
+1;18= ( High )
+1;19= ( High )
+1;20= ( Best )
+1;10=Pixel
+1;30=Low
+1;31=High
+1;s_3=&Effect
+1;26018=Bright&ness / Contrast...
+1;s_2_0=&Color
+1;26000=&Flip
+1;26001=&Mirror
+1;s_2_2=Bl&ur
+1;s_2_3=Sha&rp
+1;s_3_0=&Art
+1;s_3_2=&Light
+1;s_3_3=&Color
+1;s_3_4=&Other
+1;'Close print preview mode
+0;Ctooltips_class32
+0;DRichEdit Text and Objects
+0;IDCANCEL=Cancel
+0;11=Canvas 1
+0;12=Canvas 2
+0;3=Vertical
+0;2=Too large size , can't be created
+0;&Arrange Icons
+
