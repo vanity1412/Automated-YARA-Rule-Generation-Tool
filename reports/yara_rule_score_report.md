@@ -14,7 +14,7 @@ File: `C:\DACK_MALWARE\rules\trick.yar`
 | 6 | `_4becc0d518a97cc31427cd08348958cda4e00487c7...` | 20 | 20 | 37.00 | 22.55 | 18.00 | Rất cao |
 | 7 | `_4becc0d518a97cc31427cd08348958cda4e00487c7...` | 8 | 8 | 10.00 | 4.38 | 0.00 | Thấp |
 
-## 2. Biểu đồ thanh - So sánh Score cao nhất
+## 2. Biểu đồ thanh - Score cao nhất
 
 ```text
 sig_4becc0d518a97cc31427cd08348958cda4e004 | ████████████████████████████████████ 41.00
@@ -28,8 +28,7 @@ _4becc0d518a97cc31427cd08348958cda4e00487c | ████████ 10.00
 
 ## 3. Nhận xét
 
-- Rule có khả năng phát hiện chính xác nhất theo **Score cao nhất** là `sig_4becc0d518a97cc31427cd08348958cda4e00487c7ec0ac38fdcd53bbe36b5cc` với Max Score = **41.00**.
-- Rule có độ ổn định tương đối tốt theo **Score trung bình** là `sig_4becc0d518a97cc31427cd08348958cda4e00487c7ec0ac38fdcd53bbe36b5cc` với Avg Score = **28.20**.
-- Rule cần review false positive nhiều nhất là `sig_6a75c212b49093517e6c29dcb2644df57a931194cf5cbd58e39e649c4a2b84ba` vì có 1 Goodware String và 0 score âm.
-- Có 2 rule dạng Super Rule. Super Rule đáng chú ý nhất là `_4becc0d518a97cc31427cd08348958cda4e00487c7ec0ac38fdcd53bbe36b5cc_ef6603a7ef46177ecba194148f72d396d0ddae47e3d6e86cf43085e34b_0` vì đại diện cho đặc trưng chung của nhiều mẫu.
-- Khuyến nghị: giữ rule có Max Score/Avg Score cao, test lại trên goodware, và loại hoặc chỉnh các string có score thấp/âm hoặc bị đánh dấu Goodware String.
+- Rule có khả năng phát hiện chính xác nhất theo Max Score là `sig_4becc0d518a97cc31427cd08348958cda4e00487c7ec0ac38fdcd53bbe36b5cc` với **41.00**.
+- Rule ổn định hơn theo Avg Score là `sig_4becc0d518a97cc31427cd08348958cda4e00487c7ec0ac38fdcd53bbe36b5cc` với **28.20**.
+- Có 2 Super Rule, phù hợp mục tiêu tìm đặc trưng chung của family.
+- Khuyến nghị: giữ rule có Max/Avg Score cao, test lại trên goodware, chỉnh các string score thấp/âm.

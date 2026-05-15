@@ -1442,6 +1442,3 @@ Monitor → xem progress
 Validate/Test → kiểm tra rule
 Reports → Analyze rule scores
 ```
-#   A u t o m a t e d - Y A R A - R u l e - G e n e r a t i o n - T o o l  
- #   A u t o m a t e d - Y A R A - R u l e - G e n e r a t i o n - T o o l  
- 

@@ -3,7 +3,7 @@ TRANSLATIONS = {
     "vi": {
         "nav.home": "Home", "nav.setup": "Setup", "nav.samples": "Samples", "nav.family": "Family",
         "nav.generate": "Generate", "nav.monitor": "Monitor", "nav.validate": "Validate/Test",
-        "nav.database": "Database", "nav.reports": "Reports", "nav.settings": "Settings",
+        "nav.database": "Database", "nav.reports": "Reports", "nav.analysis": "Analysis Suite", "nav.web": "Web Mode", "nav.settings": "Settings",
         "home.title": "Bảng điều khiển", "home.subtitle": "Workflow tạo chữ ký YARA từ nhiều mẫu malware cùng family.",
         "setup.title": "Kiểm tra môi trường", "setup.validate": "Kiểm tra môi trường",
         "setup.install": "Cài requirements", "setup.update_db": "Tải / cập nhật DB", "setup.open": "Mở thư mục project",
@@ -29,7 +29,7 @@ TRANSLATIONS = {
     "en": {
         "nav.home": "Home", "nav.setup": "Setup", "nav.samples": "Samples", "nav.family": "Family",
         "nav.generate": "Generate", "nav.monitor": "Monitor", "nav.validate": "Validate/Test",
-        "nav.database": "Database", "nav.reports": "Reports", "nav.settings": "Settings",
+        "nav.database": "Database", "nav.reports": "Reports", "nav.analysis": "Analysis Suite", "nav.web": "Web Mode", "nav.settings": "Settings",
         "home.title": "Dashboard", "home.subtitle": "Workflow to build YARA signatures from malware family samples.",
         "setup.title": "Environment Check", "setup.validate": "Validate environment",
         "setup.install": "Install requirements", "setup.update_db": "Download / update DBs", "setup.open": "Open project folder",

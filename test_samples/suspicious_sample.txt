@@ -1,0 +1,9 @@
+
+    This is a test malware sample for demonstration.
+    keylogger functionality enabled
+    steal password from browser
+    inject shellcode into process
+    bypass antivirus detection
+    establish backdoor connection
+    download additional payload
+    

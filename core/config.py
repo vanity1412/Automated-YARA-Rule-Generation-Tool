@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-APP_TITLE = "yarGen GUI - Malware Family YARA Builder"
-APP_VERSION = "3.0.0-redesign"
+APP_TITLE = "yarGen GUI - Wuxia YARA Forge"
+APP_VERSION = "3.1.1-wuxia-web"
 
 MIN_DB_PARTS = 9
 EXPECTED_DB_PREFIXES = [
@@ -31,6 +31,8 @@ NAV_ITEMS = [
     ("validate", "nav.validate"),
     ("database", "nav.database"),
     ("reports", "nav.reports"),
+    ("analysis", "nav.analysis"),
+    ("web", "nav.web"),
     ("settings", "nav.settings"),
 ]
 

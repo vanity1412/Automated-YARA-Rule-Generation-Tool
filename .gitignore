@@ -1,0 +1,72 @@
+# Database files - too large for GitHub
+dbs/
+*.db
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs / temp
+logs/
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+
+# Generated outputs
+rules/
+strings_out/
+reports/
+clusters/
+_gui_runtime/
+run_yargen_command.bat
+run_yargen_command.sh
+*.compiled
+*.compiled.tmp
+
+# Samples / malware / benign test sets
+samples/
+malware/
+goodware/
+
+# Archives and binaries
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.tgz
+*.bz2
+*.xz
+*.cab
+*.iso
+*.exe
+*.dll
+*.sys
+*.scr
+*.com
+*.bin
+*.dat
+
+# Local settings
+settings.json
+*.local.json

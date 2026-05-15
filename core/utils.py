@@ -4,6 +4,57 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog, ttk
 
+
+class ToolTip:
+    """Small hover tooltip for ttk/tk widgets.
+
+    Used mainly in Generate Options so users can move the mouse over a
+    checkbox and immediately understand the corresponding yarGen flag.
+    """
+    def __init__(self, widget: tk.Widget, text: str, wraplength: int = 520):
+        self.widget = widget
+        self.text = text
+        self.wraplength = wraplength
+        self.tip = None
+        if text:
+            widget.bind("<Enter>", self.show, add="+")
+            widget.bind("<Leave>", self.hide, add="+")
+            widget.bind("<ButtonPress>", self.hide, add="+")
+
+    def show(self, _event=None):
+        if self.tip is not None or not self.text:
+            return
+        try:
+            x = self.widget.winfo_rootx() + 18
+            y = self.widget.winfo_rooty() + self.widget.winfo_height() + 6
+        except Exception:
+            x = y = 100
+        self.tip = tk.Toplevel(self.widget)
+        self.tip.wm_overrideredirect(True)
+        self.tip.wm_geometry(f"+{x}+{y}")
+        label = tk.Label(
+            self.tip,
+            text=self.text,
+            justify="left",
+            background="#FFF8DC",
+            foreground="#111827",
+            relief="solid",
+            borderwidth=1,
+            padx=8,
+            pady=5,
+            wraplength=self.wraplength,
+            font=("Segoe UI", 9),
+        )
+        label.pack()
+
+    def hide(self, _event=None):
+        if self.tip is not None:
+            try:
+                self.tip.destroy()
+            except Exception:
+                pass
+            self.tip = None
+
 def open_path(path: Path):
     try:
         path = Path(path)
@@ -37,12 +88,17 @@ def browse(var: tk.StringVar, mode: str, root_dir: Path):
     if value:
         var.set(value)
 
-def path_row(parent: ttk.Frame, row: int, label: str, var: tk.StringVar, root_dir: Path, mode: str | None = None):
+def path_row(parent: ttk.Frame, row: int, label: str, var: tk.StringVar, root_dir: Path, mode: str | None = None, tooltip: str = ""):
     ttk.Label(parent, text=label, style="Card.TLabel").grid(row=row, column=0, sticky="w", pady=4)
     entry = ttk.Entry(parent, textvariable=var)
     entry.grid(row=row, column=1, sticky="ew", padx=(8, 4), pady=4)
+    if tooltip:
+        ToolTip(entry, tooltip)
     if mode:
-        ttk.Button(parent, text="Browse", command=lambda: browse(var, mode, root_dir)).grid(row=row, column=2, sticky="ew", pady=4)
+        btn = ttk.Button(parent, text="Browse", command=lambda: browse(var, mode, root_dir))
+        btn.grid(row=row, column=2, sticky="ew", pady=4)
+        if tooltip:
+            ToolTip(btn, tooltip)
     return entry
 
 def normalize_path(value: str, base: Path) -> Path:
