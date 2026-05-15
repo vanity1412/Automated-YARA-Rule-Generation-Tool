@@ -251,17 +251,46 @@ class GenerateScreenImproved(ScrollableScreen):
         self.app.screens["monitor"].log(f"[PERF] Runtime DB mode={mode}, cwd={runtime}\n")
         return runtime
 
+
+    def _start_waiting_video_on_monitor(self):
+        """Switch to monitor screen and start the waiting video panel."""
+        try:
+            monitor = self.app.screens.get("monitor") if hasattr(self.app, "screens") else None
+            if monitor and hasattr(monitor, "start_generate_waiting_media"):
+                # Show the monitor so the user can see log + progress + video immediately.
+                try:
+                    self.app.show_screen("monitor")
+                except Exception:
+                    pass
+                monitor.start_generate_waiting_media()
+        except Exception:
+            # Video is a UX helper, never block rule generation because of it.
+            pass
+
+
     def run_generate(self):
         ok, msg = self.preflight()
         if not ok:
             messagebox.showerror("Cannot generate", msg); return
         runtime = self.fast_db_runtime_dir()
+        self._start_waiting_video_on_monitor()
         self.app.runner.run_command(build_generate_command(self.app.state), "Generate YARA rules", cwd=runtime, task="generate")
 
     def after_generate_success(self):
-        self.app.screens["monitor"].log("\n[POST] Generate completed.\n")
-        if self.app.state.var_auto_validate.get():
-            self.app.screens["validate"].validate_rule_file(Path(self.app.state.var_output.get()), show_popup=False)
+        """Called by core.runner after generate exits successfully."""
+        try:
+            monitor = self.app.screens.get("monitor") if hasattr(self.app, "screens") else None
+            if monitor and hasattr(monitor, "stop_generate_waiting_media"):
+                monitor.stop_generate_waiting_media()
+            if monitor and hasattr(monitor, "log"):
+                monitor.log("\n[POST] Generate completed.\n")
+        except Exception:
+            pass
+        try:
+            if self.app.state.var_auto_validate.get():
+                self.app.screens["validate"].validate_rule_file(Path(self.app.state.var_output.get()), show_popup=False)
+        except Exception:
+            pass
 
     def save_bat(self):
         out = Path(self.app.state.var_workdir.get()) / "run_yargen_command.bat"

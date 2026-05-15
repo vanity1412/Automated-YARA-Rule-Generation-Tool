@@ -1,6 +1,7 @@
 scandir ; python_version < "3.5"
 pefile
 lxml
+pygame
 # Optional but recommended for GUI Validate/Test tab.
 yara-python
 # Optional fuzzy hashing backends for future analyzer extension; GUI works without them.

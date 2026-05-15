@@ -53,251 +53,401 @@ STAGE_EXP = {
 }
 
 
-class VideoPlayer(tk.Frame):
-    """Simple video player using tkinter and external video player"""
-    
+
+class VideoPlayer(ttk.Frame):
+    """Video panel that plays while yarGen is generating.
+
+    It tries to play the video inside the Tkinter layout with OpenCV + Pillow.
+    If those optional libraries are not available, it falls back to opening the
+    video with the system player while keeping the status/control card in the UI.
+    """
+
+    VIDEO_EXTENSIONS = {".mp4", ".avi", ".mkv", ".mov", ".wmv", ".flv", ".webm", ".m4v"}
+
     def __init__(self, parent, app, **kwargs):
         super().__init__(parent, **kwargs)
         self.app = app
-        self.video_process = None
         self.video_files = []
         self.current_video = 0
-        self.is_playing = False
         self.video_enabled = tk.BooleanVar(value=True)
-        
-        # Tìm video files
+        self.is_playing = False
+
+        self.video_process = None
+        self.audio_process = None
+        self.music_file = self._find_music_file()
+        self.cap = None
+        self._frame_job = None
+        self._photo = None
+        self._embedded_ok = False
+        self._last_frame_time = 0.0
+
         self._find_video_files()
         self._build_ui()
-    
+
     def _find_video_files(self):
-        """Tìm các file video trong thư mục video"""
-        video_dir = Path("video")
-        if video_dir.exists():
-            video_extensions = ['.mp4', '.avi', '.mkv', '.mov', '.wmv', '.flv', '.webm']
-            self.video_files = [f for f in video_dir.iterdir() 
-                              if f.suffix.lower() in video_extensions and f.is_file()]
-            print(f"[VIDEO] Tìm thấy {len(self.video_files)} video files:")
-            for video in self.video_files:
-                print(f"[VIDEO]   - {video.name}")
-        else:
-            print("[VIDEO] Thư mục 'video' không tồn tại")
-    
+        """Find videos in common project folders.
+
+        Priority:
+        1. <root_dir>/video
+        2. <workdir>/video
+        3. ./video
+        """
+        candidates = []
+        for base in [
+            getattr(self.app, "root_dir", None),
+            getattr(getattr(self.app, "state", None), "var_workdir", None).get() if hasattr(getattr(getattr(self.app, "state", None), "var_workdir", None), "get") else None,
+            Path.cwd(),
+        ]:
+            if not base:
+                continue
+            try:
+                candidates.append(Path(base) / "video")
+            except Exception:
+                pass
+
+        seen = set()
+        videos = []
+        for folder in candidates:
+            try:
+                if not folder.exists():
+                    continue
+                for f in folder.iterdir():
+                    if f.is_file() and f.suffix.lower() in self.VIDEO_EXTENSIONS and f.resolve() not in seen:
+                        videos.append(f)
+                        seen.add(f.resolve())
+            except Exception:
+                continue
+
+        self.video_files = videos
+
+    def _find_music_file(self):
+        """Find background music file: music/report.mp3.
+
+        Priority:
+        1. <root_dir>/music/report.mp3
+        2. <workdir>/music/report.mp3
+        3. ./music/report.mp3
+        """
+        candidates = []
+        state = getattr(self.app, "state", None)
+        workdir_var = getattr(state, "var_workdir", None)
+        workdir = None
+        try:
+            workdir = workdir_var.get() if workdir_var is not None else None
+        except Exception:
+            workdir = None
+
+        for base in [getattr(self.app, "root_dir", None), workdir, Path.cwd()]:
+            if not base:
+                continue
+            try:
+                candidate = Path(base) / "music" / "report.mp3"
+                if candidate.exists() and candidate.is_file():
+                    return candidate
+                candidates.append(candidate)
+            except Exception:
+                continue
+        return candidates[0] if candidates else Path("music") / "report.mp3"
+
+    def _vlc_candidates(self):
+        """Return VLC executable candidates on Windows and POSIX."""
+        if os.name == "nt":
+            return [
+                Path(r"C:\Program Files\VideoLAN\VLC\vlc.exe"),
+                Path(r"C:\Program Files (x86)\VideoLAN\VLC\vlc.exe"),
+                "vlc.exe",
+            ]
+        return ["cvlc", "vlc"]
+
+    def _start_music(self):
+        """Play music/report.mp3 together with the video.
+
+        This intentionally uses VLC/system player instead of OpenCV because
+        OpenCV cannot play audio. VLC is preferred so the music process can be
+        stopped when Stop is clicked or when generation finishes.
+        """
+        music_file = self._find_music_file()
+        self.music_file = music_file
+        if not music_file or not music_file.exists():
+            self.status_label.configure(text=f"Không tìm thấy nhạc: {music_file}")
+            return
+
+        # Avoid starting duplicate background music.
+        if self.audio_process and self.audio_process.poll() is None:
+            return
+
+        try:
+            for vlc_path in self._vlc_candidates():
+                try:
+                    if isinstance(vlc_path, Path) and not vlc_path.exists():
+                        continue
+                    self.audio_process = subprocess.Popen(
+                        [str(vlc_path), str(music_file), "--intf", "dummy", "--loop", "--no-video", "--no-video-title-show"],
+                        creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+                    self.status_label.configure(text=f"Đang phát video + nhạc: {music_file.name}")
+                    return
+                except Exception:
+                    continue
+
+            # Fallback: open with the default system app. This may not be
+            # terminable from the GUI, but it still gives sound to the user.
+            if os.name == "nt":
+                self.audio_process = subprocess.Popen(
+                    ["cmd", "/c", "start", "", str(music_file)],
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                )
+            else:
+                for player in ("mpv", "xdg-open", "open"):
+                    try:
+                        self.audio_process = subprocess.Popen([player, str(music_file)])
+                        break
+                    except FileNotFoundError:
+                        continue
+            self.status_label.configure(text=f"Đang mở nhạc bằng trình phát hệ thống: {music_file.name}")
+        except Exception as exc:
+            self.status_label.configure(text=f"Không thể phát music/report.mp3: {exc}")
+
+    def _stop_music(self):
+        """Stop the extra music process when possible."""
+        if self.audio_process:
+            try:
+                self.audio_process.terminate()
+            except Exception:
+                pass
+            self.audio_process = None
+
     def _build_ui(self):
-        """Xây dựng giao diện video player"""
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
-        
-        # Header với controls
-        header = ttk.Frame(self)
+
+        header = ttk.Frame(self, style="Surface.TFrame")
         header.grid(row=0, column=0, sticky="ew", pady=(0, 8))
-        header.columnconfigure(1, weight=1)
-        
-        ttk.Label(header, text="🎬 Video giải trí", style="H1.TLabel").grid(row=0, column=0, sticky="w")
-        
-        # Controls
-        controls = ttk.Frame(header)
+        header.columnconfigure(0, weight=1)
+
+        ttk.Label(header, text="🎬 Video chờ khi tạo rule", style="H1.TLabel").grid(row=0, column=0, sticky="w")
+
+        controls = ttk.Frame(header, style="Surface.TFrame")
         controls.grid(row=0, column=1, sticky="e")
-        
-        ttk.Checkbutton(controls, text="Bật video", variable=self.video_enabled, 
-                       command=self._toggle_video).grid(row=0, column=0, padx=(0, 8))
-        ttk.Button(controls, text="▶️ Play", command=self.play_video, 
-                  style="Secondary.TButton").grid(row=0, column=1, padx=(0, 4))
-        ttk.Button(controls, text="⏸️ Pause", command=self.pause_video, 
-                  style="Secondary.TButton").grid(row=0, column=2, padx=(0, 4))
-        ttk.Button(controls, text="⏭️ Next", command=self.next_video, 
-                  style="Secondary.TButton").grid(row=0, column=3, padx=(0, 4))
-        ttk.Button(controls, text="🔊 Volume", command=self._adjust_volume, 
-                  style="Secondary.TButton").grid(row=0, column=4)
-        
-        # Video display area
-        self.video_frame = ttk.Frame(self, style="Card.TFrame", padding=14)
-        self.video_frame.grid(row=1, column=0, sticky="nsew")
-        self.video_frame.columnconfigure(0, weight=1)
-        self.video_frame.rowconfigure(0, weight=1)
-        
-        # Placeholder khi không có video
-        video_info = f"Tìm thấy {len(self.video_files)} video" if self.video_files else "Không tìm thấy video nào"
-        if self.video_files:
-            video_list = "\n".join([f"• {v.name}" for v in self.video_files[:3]])
-            if len(self.video_files) > 3:
-                video_list += f"\n• ... và {len(self.video_files) - 3} video khác"
-        else:
-            video_list = "Đặt file video (.mp4, .avi, .mkv) vào thư mục 'video'"
-            
-        self.placeholder = ttk.Label(self.video_frame, 
-                                   text=f"🎬 Video giải trí trong lúc tạo YARA rules\n\n"
-                                        f"{video_info}:\n{video_list}\n\n"
-                                        "Video sẽ tự động phát khi bắt đầu generate 😊",
-                                   style="Card.TLabel", justify="center")
-        self.placeholder.grid(row=0, column=0)
-        
-        # Status label
-        self.status_label = ttk.Label(self, text="Sẵn sàng phát video", style="Muted.TLabel")
+        ttk.Checkbutton(controls, text="Tự phát", variable=self.video_enabled, command=self._toggle_video).grid(row=0, column=0, padx=(0, 6))
+        ttk.Button(controls, text="Play", command=self.play_video, style="Secondary.TButton").grid(row=0, column=1, padx=(0, 4))
+        ttk.Button(controls, text="Stop", command=self.stop_video, style="Secondary.TButton").grid(row=0, column=2, padx=(0, 4))
+        ttk.Button(controls, text="Next", command=self.next_video, style="Secondary.TButton").grid(row=0, column=3)
+
+        self.display_frame = ttk.Frame(self, style="Card.TFrame", padding=8)
+        self.display_frame.grid(row=1, column=0, sticky="nsew")
+        self.display_frame.columnconfigure(0, weight=1)
+        self.display_frame.rowconfigure(0, weight=1)
+
+        self.display = tk.Label(
+            self.display_frame,
+            text=self._placeholder_text(),
+            justify="center",
+            bg="#0f172a",
+            fg="#e5e7eb",
+            font=("Segoe UI", 10),
+            padx=10,
+            pady=10,
+        )
+        self.display.grid(row=0, column=0, sticky="nsew")
+
+        self.status_label = ttk.Label(self, text=self._status_text(), style="Muted.TLabel", wraplength=520)
         self.status_label.grid(row=2, column=0, sticky="ew", pady=(8, 0))
-    
+
+    def _placeholder_text(self):
+        if not self.video_files:
+            return (
+                "Chưa tìm thấy video\n\n"
+                "Hãy đặt file .mp4/.avi/.mkv vào thư mục:\n"
+                "• video/\n\n"
+                "Khi bấm Generate, video sẽ tự phát nếu có file."
+            )
+        names = "\n".join(f"• {v.name}" for v in self.video_files[:4])
+        if len(self.video_files) > 4:
+            names += f"\n• ... và {len(self.video_files) - 4} video khác"
+        return f"Sẵn sàng phát khi tạo rule\n\n{names}"
+
+    def _status_text(self):
+        if not self.video_files:
+            return "Video: chưa có file trong thư mục video."
+        music_state = "có music/report.mp3" if self._find_music_file().exists() else "chưa có music/report.mp3"
+        return f"Video: tìm thấy {len(self.video_files)} file. File hiện tại: {self.video_files[self.current_video].name} | Nhạc: {music_state}"
+
     def _toggle_video(self):
-        """Bật/tắt video"""
         if not self.video_enabled.get():
             self.stop_video()
-    
+
+    def auto_play_on_generate_start(self):
+        """Called by GenerateScreen right after the user clicks Generate."""
+        if self.video_enabled.get() and self.video_files:
+            self.play_video()
+
+    def auto_stop_on_generate_end(self):
+        """Called when yarGen exits."""
+        self.stop_video()
+
     def play_video(self):
-        """Phát video"""
         if not self.video_enabled.get():
-            self.status_label.config(text="Video đã bị tắt")
+            self.status_label.configure(text="Video đang bị tắt.")
             return
-            
         if not self.video_files:
-            self.status_label.config(text="Không có file video nào để phát")
+            self._find_video_files()
+            self.display.configure(text=self._placeholder_text(), image="")
+            self.status_label.configure(text=self._status_text())
             return
-            
         if self.is_playing:
-            self.status_label.config(text="Video đang phát rồi")
             return
-            
+
         video_file = self.video_files[self.current_video]
-        self.status_label.config(text=f"Đang phát: {video_file.name}")
-        
-        try:
-            if os.name == 'nt':  # Windows
-                # Thử các video player theo thứ tự ưu tiên
-                players_to_try = [
-                    # VLC
-                    (r"C:\Program Files\VideoLAN\VLC\vlc.exe", [
-                        str(video_file), "--intf", "dummy", "--loop", 
-                        "--no-video-title-show", "--play-and-exit"
-                    ]),
-                    (r"C:\Program Files (x86)\VideoLAN\VLC\vlc.exe", [
-                        str(video_file), "--intf", "dummy", "--loop", 
-                        "--no-video-title-show", "--play-and-exit"
-                    ]),
-                    # Windows Media Player
-                    ("wmplayer.exe", [str(video_file)]),
-                    # Movies & TV (Windows 10/11)
-                    ("microsoft.windows.photos.exe", [str(video_file)]),
-                    # Default system player
-                    ("start", ["/wait", str(video_file)]),
-                    # Fallback - mở với default app
-                    ("explorer.exe", [str(video_file)])
-                ]
-                
-                success = False
-                for player_path, args in players_to_try:
-                    try:
-                        if player_path.endswith('.exe') and not player_path.startswith(('start', 'explorer')):
-                            # Kiểm tra file tồn tại
-                            if not Path(player_path).exists():
-                                continue
-                        
-                        print(f"[VIDEO] Thử player: {player_path}")
-                        
-                        if player_path == "start":
-                            # Sử dụng start command
-                            self.video_process = subprocess.Popen([
-                                "cmd", "/c", "start", "/wait", str(video_file)
-                            ], creationflags=subprocess.CREATE_NO_WINDOW)
-                        else:
-                            # Sử dụng player trực tiếp
-                            self.video_process = subprocess.Popen([
-                                player_path
-                            ] + args, creationflags=subprocess.CREATE_NO_WINDOW)
-                        
-                        success = True
-                        print(f"[VIDEO] Thành công với: {player_path}")
-                        break
-                        
-                    except Exception as e:
-                        print(f"[VIDEO] Lỗi với {player_path}: {e}")
-                        continue
-                
-                if not success:
-                    raise Exception("Không tìm thấy video player nào hoạt động")
-                    
-            else:
-                # Linux/Mac - sử dụng mpv hoặc vlc
-                try:
-                    print("[VIDEO] Sử dụng mpv")
-                    self.video_process = subprocess.Popen([
-                        "mpv", str(video_file), "--loop"
-                    ])
-                except FileNotFoundError:
-                    print("[VIDEO] mpv không tìm thấy, sử dụng vlc")
-                    self.video_process = subprocess.Popen([
-                        "vlc", str(video_file), "--loop"
-                    ])
-            
-            self.is_playing = True
-            self.placeholder.config(text=f"🎬 Đang phát: {video_file.name}\n\n"
-                                         "Video đang chạy trong cửa sổ riêng\n\n"
-                                         "Thư giãn và chờ YARA rules hoàn thành! 😊\n\n"
-                                         "Bấm Pause để tạm dừng")
-            
-            print(f"[VIDEO] Bắt đầu phát video: {video_file.name}")
-            
-        except Exception as e:
-            error_msg = f"Lỗi phát video: {e}"
-            self.status_label.config(text=error_msg)
-            print(f"[VIDEO ERROR] {error_msg}")
-            
-            # Hiển thị hướng dẫn cài đặt
-            self.placeholder.config(text="❌ Không thể phát video\n\n"
-                                         "Cần cài đặt video player:\n"
-                                         "• VLC: https://www.videolan.org/vlc/\n"
-                                         "• Hoặc đảm bảo Windows có app mở video\n\n"
-                                         "Video sẽ mở bằng app mặc định của hệ thống")
-    
-    def pause_video(self):
-        """Tạm dừng video"""
-        if self.video_process:
-            try:
-                self.video_process.terminate()
-                self.is_playing = False
-                self.status_label.config(text="Video đã tạm dừng")
-                self.placeholder.config(text="⏸️ Video đã tạm dừng\n\nBấm Play để tiếp tục")
-            except Exception as e:
-                self.status_label.config(text=f"Lỗi tạm dừng: {e}")
-    
-    def stop_video(self):
-        """Dừng video"""
-        if self.video_process:
-            try:
-                self.video_process.terminate()
-                self.video_process = None
-                self.is_playing = False
-                self.status_label.config(text="Video đã dừng")
-                self.placeholder.config(text="⏹️ Video đã dừng")
-            except Exception as e:
-                self.status_label.config(text=f"Lỗi dừng video: {e}")
-    
-    def next_video(self):
-        """Chuyển video tiếp theo"""
-        if not self.video_files:
+        self.status_label.configure(text=f"Đang phát: {video_file.name}")
+        self._start_music()
+
+        if self._start_embedded(video_file):
             return
-            
+
+        self._start_external(video_file)
+
+    def _start_embedded(self, video_file):
+        try:
+            import cv2
+            from PIL import Image, ImageTk
+        except Exception:
+            return False
+
+        try:
+            self.cap = cv2.VideoCapture(str(video_file))
+            if not self.cap or not self.cap.isOpened():
+                return False
+            self._embedded_cv2 = cv2
+            self._embedded_image = Image
+            self._embedded_imagetk = ImageTk
+            self.is_playing = True
+            self._embedded_ok = True
+            self._last_frame_time = 0.0
+            self._tick_frame()
+            return True
+        except Exception as exc:
+            self.status_label.configure(text=f"Không thể phát trong layout, thử mở bằng app hệ thống: {exc}")
+            self._release_embedded()
+            return False
+
+    def _tick_frame(self):
+        if not self.is_playing or not self.cap:
+            return
+
+        ok, frame = self.cap.read()
+        if not ok:
+            try:
+                self.cap.set(self._embedded_cv2.CAP_PROP_POS_FRAMES, 0)
+                ok, frame = self.cap.read()
+            except Exception:
+                ok = False
+
+        if ok:
+            try:
+                frame = self._embedded_cv2.cvtColor(frame, self._embedded_cv2.COLOR_BGR2RGB)
+                image = self._embedded_image.fromarray(frame)
+
+                box_w = max(320, self.display_frame.winfo_width() - 18)
+                box_h = max(180, self.display_frame.winfo_height() - 18)
+                image.thumbnail((box_w, box_h))
+
+                self._photo = self._embedded_imagetk.PhotoImage(image)
+                self.display.configure(image=self._photo, text="", bg="#000000")
+            except Exception as exc:
+                self.display.configure(text=f"Lỗi render video:\n{exc}", image="", bg="#0f172a", fg="#e5e7eb")
+
+        fps = 24
+        try:
+            fps = self.cap.get(self._embedded_cv2.CAP_PROP_FPS) or 24
+        except Exception:
+            pass
+        delay = max(15, int(1000 / max(1, min(fps, 60))))
+        self._frame_job = self.after(delay, self._tick_frame)
+
+    def _start_external(self, video_file):
+        try:
+            if os.name == "nt":
+                self.video_process = subprocess.Popen(
+                    ["cmd", "/c", "start", "", str(video_file)],
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                )
+            else:
+                for player in ("mpv", "vlc", "xdg-open", "open"):
+                    try:
+                        self.video_process = subprocess.Popen([player, str(video_file)])
+                        break
+                    except FileNotFoundError:
+                        continue
+            self.is_playing = True
+            self.display.configure(
+                text=(
+                    f"Đang phát bằng trình phát hệ thống:\n{video_file.name}\n\n"
+                    "Nếu muốn phát ngay trong layout, cài thêm:\n"
+                    "pip install opencv-python pillow"
+                ),
+                image="",
+                bg="#0f172a",
+                fg="#e5e7eb",
+            )
+        except Exception as exc:
+            self.is_playing = False
+            self.status_label.configure(text=f"Lỗi phát video: {exc}")
+            self.display.configure(text=f"Không thể phát video:\n{exc}", image="", bg="#0f172a", fg="#e5e7eb")
+
+    def pause_video(self):
+        self.stop_video()
+
+    def stop_video(self):
+        if self._frame_job is not None:
+            try:
+                self.after_cancel(self._frame_job)
+            except Exception:
+                pass
+            self._frame_job = None
+
+        self._release_embedded()
+
+        if self.video_process:
+            try:
+                self.video_process.terminate()
+            except Exception:
+                pass
+            self.video_process = None
+
+        self._stop_music()
+
+        self.is_playing = False
+        self._photo = None
+        if hasattr(self, "display"):
+            self.display.configure(text=self._placeholder_text(), image="", bg="#0f172a", fg="#e5e7eb")
+        if hasattr(self, "status_label"):
+            self.status_label.configure(text=self._status_text())
+
+    def _release_embedded(self):
+        if self.cap:
+            try:
+                self.cap.release()
+            except Exception:
+                pass
+        self.cap = None
+        self._embedded_ok = False
+
+    def next_video(self):
+        if not self.video_files:
+            self._find_video_files()
+            self.display.configure(text=self._placeholder_text(), image="")
+            self.status_label.configure(text=self._status_text())
+            return
+
         was_playing = self.is_playing
         self.stop_video()
-        
         self.current_video = (self.current_video + 1) % len(self.video_files)
-        
+        self.status_label.configure(text=self._status_text())
         if was_playing:
             self.play_video()
-        else:
-            next_video = self.video_files[self.current_video]
-            self.status_label.config(text=f"Video tiếp theo: {next_video.name}")
-    
-    def _adjust_volume(self):
-        """Điều chỉnh âm lượng (placeholder)"""
-        from tkinter import messagebox
-        messagebox.showinfo("Volume", "Điều chỉnh âm lượng trong cửa sổ video player")
-    
-    def auto_play_on_generate_start(self):
-        """Tự động phát video khi bắt đầu generate"""
-        if self.video_enabled.get() and self.video_files and not self.is_playing:
-            self.play_video()
-    
-    def auto_stop_on_generate_end(self):
-        """Tự động dừng video khi kết thúc generate"""
-        if self.is_playing:
-            self.stop_video()
 
 
 class WuxiaEnergyBar(tk.Canvas):
@@ -559,50 +709,22 @@ class MonitorScreen(ScrollableScreen):
         self._start_footer_timer()
 
     def build(self):
-        # Create scrollable content
+        # Clean, full-width monitor layout. The old layout/height/advanced
+        # controls were removed because the monitor should be easy to read while
+        # the rule generation is running.
         content = self.create_scrollable_content(self.app.t("monitor.title"))
-        
-        # Layout configuration frame
-        layout_frame = ttk.LabelFrame(content, text="Cấu hình giao diện", padding=8)
-        layout_frame.grid(row=0, column=0, sticky="ew", pady=(0, 10))
-        layout_frame.columnconfigure(2, weight=1)
-        
-        ttk.Label(layout_frame, text="Layout:", style="Card.TLabel").grid(row=0, column=0, sticky="w", padx=(0, 8))
-        layout_combo = ttk.Combobox(layout_frame, textvariable=self.layout_mode, 
-                                   values=["horizontal", "vertical", "tabbed"], 
-                                   state="readonly", width=12)
-        layout_combo.grid(row=0, column=1, sticky="w", padx=(0, 16))
-        layout_combo.bind("<<ComboboxSelected>>", self._on_layout_changed)
-        
-        ttk.Label(layout_frame, text="Chiều cao log:", style="Card.TLabel").grid(row=0, column=2, sticky="w", padx=(0, 8))
-        log_height_spin = ttk.Spinbox(layout_frame, from_=10, to=50, textvariable=self.log_height, 
-                                     width=8, command=self._on_layout_changed)
-        log_height_spin.grid(row=0, column=3, sticky="w", padx=(0, 16))
-        
-        ttk.Label(layout_frame, text="Chiều cao mascot:", style="Card.TLabel").grid(row=0, column=4, sticky="w", padx=(0, 8))
-        mascot_height_spin = ttk.Spinbox(layout_frame, from_=200, to=500, textvariable=self.mascot_height, 
-                                        width=8, command=self._on_layout_changed)
-        mascot_height_spin.grid(row=0, column=5, sticky="w", padx=(0, 16))
-        
-        ttk.Checkbutton(layout_frame, text="Hiện cài đặt nâng cao", 
-                       variable=self.show_advanced, 
-                       command=self._on_layout_changed).grid(row=0, column=6, sticky="w", padx=(0, 8))
-        
-        ttk.Checkbutton(layout_frame, text="Hiện video giải trí", 
-                       variable=self.show_video, 
-                       command=self._on_layout_changed).grid(row=0, column=7, sticky="w")
-        
-        # Title and status
+        content.columnconfigure(0, weight=1)
+        content.rowconfigure(3, weight=1)
+
         title_row = ttk.Frame(content, style="App.TFrame")
-        title_row.grid(row=1, column=0, sticky="ew", pady=(0, 8))
+        title_row.grid(row=0, column=0, sticky="ew", pady=(0, 8))
         title_row.columnconfigure(0, weight=1)
-        
+        ttk.Label(title_row, text=self.app.t("monitor.title"), style="Title.TLabel").grid(row=0, column=0, sticky="w")
         self.status_badge = ttk.Label(title_row, text="Sẵn sàng nhập môn ☯", style="Pill.TLabel")
         self.status_badge.grid(row=0, column=1, sticky="e", padx=4)
 
-        # Progress dashboard
         dash = ttk.Frame(content, style="Card.TFrame", padding=12)
-        dash.grid(row=2, column=0, sticky="ew", pady=(0, 8))
+        dash.grid(row=1, column=0, sticky="ew", pady=(0, 8))
         dash.columnconfigure(0, weight=1)
 
         stage_header = ttk.Frame(dash, style="Surface.TFrame")
@@ -625,9 +747,8 @@ class MonitorScreen(ScrollableScreen):
         self.stage_tree.tag_configure("error", background="#FEF2F2", foreground="#991B1B")
         self.stage_tree.grid(row=3, column=0, sticky="ew", pady=(0, 2))
 
-        # Quick actions
         actions = ttk.LabelFrame(content, text="Quick actions", padding=(8, 6))
-        actions.grid(row=3, column=0, sticky="ew", pady=(0, 8))
+        actions.grid(row=2, column=0, sticky="ew", pady=(0, 8))
         for c in range(4):
             actions.columnconfigure(c, weight=1, uniform="actions")
         action_buttons = [
@@ -643,18 +764,20 @@ class MonitorScreen(ScrollableScreen):
             btn = ttk.Button(actions, text=f"{emoji}  {label}", command=command, style="Wuxia.TButton")
             btn.grid(row=idx // 4, column=idx % 4, sticky="ew", padx=4, pady=3)
 
-        # Main content area
         self.main_frame = ttk.Frame(content, style="App.TFrame")
-        self.main_frame.grid(row=4, column=0, sticky="nsew", pady=(8, 0))
-        content.rowconfigure(4, weight=1)
-        
-        # Summary footer
-        self.summary = ttk.Label(content, text="YARA summary: no rule yet.", style="Footer.TLabel")
-        self.summary.grid(row=5, column=0, sticky="ew", pady=(8, 0))
-        
+        self.main_frame.grid(row=3, column=0, sticky="nsew", pady=(8, 0))
+        self.main_frame.columnconfigure(0, weight=2)
+        self.main_frame.columnconfigure(1, weight=1)
+        self.main_frame.rowconfigure(0, weight=1)
+
         self._build_layout()
+
+        self.summary = ttk.Label(content, text="YARA summary: no rule yet.", style="Footer.TLabel")
+        self.summary.grid(row=4, column=0, sticky="ew", pady=(8, 0))
+
         self.reset_progress()
         self._start_footer_timer()
+
 
     def _build_layout(self):
         # Clear existing widgets
@@ -725,27 +848,50 @@ class MonitorScreen(ScrollableScreen):
             self._build_advanced_settings(settings_card)
 
     def _build_horizontal_layout(self):
-        """Build horizontal side-by-side layout (original)"""
-        self.main_frame.columnconfigure(0, weight=1)
+        """Build a clean two-column monitor layout.
+
+        Left side: process log.
+        Right side: video player on top, mascot below.
+        """
+        for c in range(2):
+            self.main_frame.columnconfigure(c, weight=0)
+        self.main_frame.columnconfigure(0, weight=2)
         self.main_frame.columnconfigure(1, weight=1)
         self.main_frame.rowconfigure(0, weight=1)
-        
-        # Log on left
+
         log_card = ttk.Frame(self.main_frame, style="Card.TFrame", padding=14)
-        log_card.grid(row=0, column=0, sticky="nsew", padx=(0, 5))
+        log_card.grid(row=0, column=0, sticky="nsew", padx=(0, 6))
         self._build_log_area(log_card)
-        
-        # Mascot on right
-        mascot_card = ttk.Frame(self.main_frame, style="Card.TFrame", padding=14)
-        mascot_card.grid(row=0, column=1, sticky="nsew", padx=(5, 0))
+
+        right_col = ttk.Frame(self.main_frame, style="App.TFrame")
+        right_col.grid(row=0, column=1, sticky="nsew", padx=(6, 0))
+        right_col.columnconfigure(0, weight=1)
+        right_col.rowconfigure(0, weight=1)
+        right_col.rowconfigure(1, weight=1)
+
+        video_card = ttk.Frame(right_col, style="Card.TFrame", padding=14)
+        video_card.grid(row=0, column=0, sticky="nsew", pady=(0, 8))
+        self._build_video_area(video_card)
+
+        mascot_card = ttk.Frame(right_col, style="Card.TFrame", padding=14)
+        mascot_card.grid(row=1, column=0, sticky="nsew")
         self._build_mascot_area(mascot_card)
-        
-        # Advanced settings below if enabled
-        if self.show_advanced.get():
-            self.main_frame.rowconfigure(1, weight=0)
-            settings_card = ttk.Frame(self.main_frame, style="Card.TFrame", padding=14)
-            settings_card.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(10, 0))
-            self._build_advanced_settings(settings_card)
+
+
+    def _build_video_area(self, parent):
+        """Build video card used while generation is running."""
+        parent.columnconfigure(0, weight=1)
+        parent.rowconfigure(1, weight=1)
+
+        header = ttk.Frame(parent, style="Surface.TFrame")
+        header.grid(row=0, column=0, sticky="ew", pady=(0, 8))
+        header.columnconfigure(0, weight=1)
+        ttk.Label(header, text="🎬 Video chờ", style="H1.TLabel").grid(row=0, column=0, sticky="w")
+        ttk.Label(header, text="Tự phát khi bấm Generate", style="Muted.TLabel").grid(row=0, column=1, sticky="e")
+
+        self.video_player = VideoPlayer(parent, self, style="Card.TFrame")
+        self.video_player.grid(row=1, column=0, sticky="nsew")
+
 
     def _build_log_area(self, parent, full_height=False):
         """Build log display area"""
@@ -943,6 +1089,32 @@ class MonitorScreen(ScrollableScreen):
             return "Sẵn sàng nhập môn ☯"
         return "Đang luyện công... ⏳"
 
+    def start_generate_waiting_media(self):
+        """Called from GenerateScreen when the user starts rule generation."""
+        try:
+            if getattr(self, "video_player", None) is not None:
+                self.video_player.auto_play_on_generate_start()
+            self.status_badge.configure(text="Đang tạo rule... video đã bật 🎬")
+            self.log("[VIDEO] Waiting video started for rule generation.\n")
+        except Exception as exc:
+            try:
+                self.log(f"[VIDEO WARN] Could not start waiting video: {exc}\n")
+            except Exception:
+                pass
+
+    def stop_generate_waiting_media(self):
+        """Stop waiting video after the generation process exits."""
+        try:
+            if getattr(self, "video_player", None) is not None:
+                self.video_player.auto_stop_on_generate_end()
+            self.log("[VIDEO] Waiting video stopped.\n")
+        except Exception as exc:
+            try:
+                self.log(f"[VIDEO WARN] Could not stop waiting video: {exc}\n")
+            except Exception:
+                pass
+
+
     def reset_progress(self):
         s = self.app.state
         s.progress_stage.set("Idle")
@@ -1035,6 +1207,7 @@ class MonitorScreen(ScrollableScreen):
             self.set_stage("5", "Done", f"{s.progress_simple_rules} simple, {s.progress_super_rules} super")
             self.set_stage("6", "Running", "Ready for validation")
         if "[process exited]" in low:
+            self.stop_generate_waiting_media()
             if "code=0" in low:
                 s.progress_stage.set("Finished")
                 s.progress_percent.set(100)

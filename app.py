@@ -9,6 +9,7 @@ from core.state import AppState
 from core.settings import SettingsManager
 from core.i18n import I18n
 from core.runner import ProcessRunner
+from core.audio_manager import AudioManager
 from widgets.sidebar import Sidebar
 from widgets.statusbar import StatusBar
 from widgets.wuxia_theme import WUXIA, DARK_WUXIA
@@ -35,6 +36,9 @@ class YarGenApp(tk.Tk):
         self.i18n = I18n(self.settings.get("language", "vi"))
         self.state = AppState(self, self.root_dir, self.settings)
         self.runner = ProcessRunner(self)
+        
+        # Khởi tạo Audio Manager
+        self.audio_manager = AudioManager(self.root_dir)
 
         self.title(f"{APP_TITLE} v{APP_VERSION}")
         self.geometry("1366x820")
@@ -51,6 +55,17 @@ class YarGenApp(tk.Tk):
             self.refresh_status()
 
         self.after(100, self.runner.drain_output_queue)
+        
+        # Bắt đầu phát nhạc nền nếu được bật trong settings
+        if self.settings.get("background_music_enabled", True):
+            self.after(500, self.audio_manager.play_background_music)
+            
+        # Đặt âm lượng từ settings
+        volume = self.settings.get("music_volume", 30)
+        self.audio_manager.set_volume(volume / 100.0)
+        
+        # Đăng ký sự kiện đóng ứng dụng để dọn dẹp audio
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def _configure_style(self):
         self.style = ttk.Style(self)
@@ -147,12 +162,17 @@ class YarGenApp(tk.Tk):
         ttk.Label(brand, text=APP_TITLE, style="TopTitle.TLabel").grid(row=0, column=1, sticky="w")
         ttk.Label(brand, text="Kiếm hiệp malware-analysis workstation • static only • offline friendly", style="TopSubtitle.TLabel").grid(row=1, column=1, sticky="w")
         ttk.Label(self.topbar, text="⚔ YARA Kiếm Các", style="Pill.TLabel").grid(row=0, column=1, sticky="e", padx=8)
+        
+        # Nút điều khiển âm thanh
+        self.music_button = ttk.Button(self.topbar, text="", command=self.toggle_background_music, style="Wuxia.TButton")
+        self.music_button.grid(row=0, column=2, padx=4)
+        
         self.mode_button = ttk.Button(self.topbar, text="", command=self.toggle_mode, style="Wuxia.TButton")
-        self.mode_button.grid(row=0, column=2, padx=4)
+        self.mode_button.grid(row=0, column=3, padx=4)
         self.lang_button = ttk.Button(self.topbar, text="", command=self.toggle_language, style="Wuxia.TButton")
-        self.lang_button.grid(row=0, column=3, padx=4)
+        self.lang_button.grid(row=0, column=4, padx=4)
         self.theme_button = ttk.Button(self.topbar, text="", command=self.toggle_theme, style="Wuxia.TButton")
-        self.theme_button.grid(row=0, column=4, padx=4)
+        self.theme_button.grid(row=0, column=5, padx=4)
 
         self.sidebar = Sidebar(self, NAV_ITEMS)
         self.sidebar.grid(row=1, column=0, sticky="nsw")
@@ -230,9 +250,43 @@ class YarGenApp(tk.Tk):
         mode = self.settings.get("mode", "basic")
         lang = self.i18n.language
         theme = self.settings.get("theme", "light")
+        music_enabled = self.settings.get("background_music_enabled", True)
+        
+        self.music_button.configure(text=("🎵 Music ON" if music_enabled else "🔇 Music OFF"))
         self.mode_button.configure(text=("⚔ Advanced" if mode == "advanced" else "🧘 Basic"))
         self.lang_button.configure(text=("🌐 English" if lang == "vi" else "🌐 Tiếng Việt"))
         self.theme_button.configure(text=("🌙 Dark" if theme != "dark" else "☀ Light"))
 
     def refresh_status(self):
         self.statusbar.refresh()
+    
+    def on_closing(self):
+        """Xử lý khi đóng ứng dụng"""
+        # Dọn dẹp audio manager
+        if hasattr(self, 'audio_manager'):
+            self.audio_manager.cleanup()
+        
+        # Đóng ứng dụng
+        self.destroy()
+    
+    def toggle_background_music(self):
+        """Bật/tắt nhạc nền"""
+        if hasattr(self, 'audio_manager'):
+            current_state = self.settings.get("background_music_enabled", True)
+            new_state = not current_state
+            
+            self.settings.set("background_music_enabled", new_state)
+            self.settings.save()
+            
+            if new_state:
+                self.audio_manager.play_background_music()
+            else:
+                self.audio_manager.stop_music()
+    
+    def set_music_volume(self, volume):
+        """Đặt âm lượng nhạc (0-100)"""
+        if hasattr(self, 'audio_manager'):
+            volume_float = volume / 100.0
+            self.audio_manager.set_volume(volume_float)
+            self.settings.set("music_volume", volume)
+            self.settings.save()

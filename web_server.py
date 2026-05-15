@@ -134,6 +134,98 @@ def count_rules(path: Path) -> int:
     return len(re.findall(r"(?m)^\s*(?:private\s+|global\s+)*rule\s+[A-Za-z_][A-Za-z0-9_]*", text))
 
 
+MEDIA_VIDEO_EXTENSIONS = {".mp4", ".webm", ".m4v", ".mov", ".avi", ".mkv"}
+MEDIA_AUDIO_EXTENSIONS = {".mp3", ".wav", ".m4a", ".ogg"}
+
+
+def first_media_file(folder_name: str, extensions: set[str], preferred_name: str | None = None) -> Path | None:
+    """Return a media file from ROOT_DIR/folder_name.
+
+    For the waiting video/audio UX:
+    - video/video.mp4 is preferred when present.
+    - music/report.mp3 is preferred when present.
+    """
+    folder = ROOT_DIR / folder_name
+    if not folder.exists():
+        return None
+    if preferred_name:
+        preferred = folder / preferred_name
+        if preferred.exists() and preferred.is_file() and preferred.suffix.lower() in extensions:
+            return preferred
+    try:
+        files = sorted(
+            [p for p in folder.iterdir() if p.is_file() and p.suffix.lower() in extensions],
+            key=lambda p: p.name.lower(),
+        )
+        return files[0] if files else None
+    except Exception:
+        return None
+
+
+def media_html(compact: bool = False) -> str:
+    """Small reusable video card for index/job pages.
+
+    Browsers often block autoplay with sound. The video is muted by default so
+    it can autoplay. The separate report.mp3 can be started by the user with the
+    "Bật nhạc" button.
+    """
+    video = first_media_file("video", MEDIA_VIDEO_EXTENSIONS, "video.mp4")
+    audio = first_media_file("music", MEDIA_AUDIO_EXTENSIONS, "report.mp3")
+    if not video and not audio:
+        return """
+        <div class='media-card'>
+          <h3>🎬 Video chờ</h3>
+          <div class='video-placeholder'>Chưa tìm thấy video/music.<br>Đặt <b>video/video.mp4</b> và <b>music/report.mp3</b> vào thư mục project.</div>
+        </div>"""
+    video_tag = ""
+    if video:
+        video_tag = """
+        <video id='waitingVideo' class='waiting-video' autoplay loop muted playsinline controls>
+          <source src='/media/video' type='video/mp4'>
+          Trình duyệt không hỗ trợ video.
+        </video>"""
+    else:
+        video_tag = "<div class='video-placeholder'>Chưa có video trong thư mục <b>video/</b>.</div>"
+    audio_tag = ""
+    audio_buttons = ""
+    if audio:
+        audio_tag = "<audio id='reportMusic' src='/media/report.mp3' loop preload='auto'></audio>"
+        audio_buttons = """
+          <button type='button' class='btn secondary small-media' onclick='toggleWebMusic()'>🔊 Bật/Tắt nhạc</button>
+          <button type='button' class='btn secondary small-media' onclick='toggleVideoMute()'>🎚 Bật/Tắt tiếng video</button>"""
+    return f"""
+    <div class='media-card {"compact" if compact else ""}'>
+      <div class='media-head'>
+        <h3>🎬 Video chờ</h3>
+        <span class='sub'>Tự chạy khi mở trang; nhạc cần bấm bật do trình duyệt chặn autoplay âm thanh.</span>
+      </div>
+      {video_tag}
+      {audio_tag}
+      <div class='media-actions'>{audio_buttons}</div>
+    </div>"""
+
+
+def media_script() -> str:
+    return """
+function toggleWebMusic(){
+  const audio=document.getElementById('reportMusic');
+  if(!audio){alert('Không tìm thấy music/report.mp3'); return;}
+  if(audio.paused){audio.play().catch(()=>alert('Trình duyệt chặn autoplay. Hãy bấm lại hoặc kiểm tra quyền phát âm thanh.'));}
+  else{audio.pause();}
+}
+function toggleVideoMute(){
+  const video=document.getElementById('waitingVideo');
+  if(!video){return;}
+  video.muted=!video.muted;
+  if(!video.paused){video.play().catch(()=>{});}
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const video=document.getElementById('waitingVideo');
+  if(video){video.play().catch(()=>{});}
+});
+"""
+
+
 def validate_yara_syntax(rule_path: Path) -> str:
     if not rule_path.exists():
         return "missing"
@@ -442,7 +534,7 @@ def run_job(job: Job, fields: dict[str, str]) -> None:
 
 def css() -> str:
     return """
-:root{--bg:#eef6fb;--surface:#fff;--line:#cfe3fb;--ink:#09213f;--muted:#5c6b82;--blue:#2563eb;--cyan:#06b6d4;--danger:#dc2626;--ok:#059669;--warn:#b7791f}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f8fbff,#eaf6ff);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}.wrap{max-width:1260px;margin:0 auto;padding:22px}h1{margin:0;font-size:30px}.sub{color:var(--muted)}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px}.brand{display:flex;align-items:center;gap:12px}.sigil{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:white;font-size:28px;box-shadow:0 12px 28px #2563eb33}.card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 36px #2563eb14;margin-bottom:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.field{margin-bottom:10px}.field label{display:block;font-weight:800;margin-bottom:5px}input,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfdff}.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.check{border:1px solid var(--line);border-radius:10px;background:#f7fbff;padding:9px;font-weight:700}.drop{display:block;border:2px dashed #93c5fd;border-radius:16px;background:#f7fbff;padding:24px;text-align:center;cursor:pointer}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:white}.secondary{background:#eaf3ff;color:#1d4ed8}.bar{height:17px;background:#dbeafe;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#2563eb,#06b6d4);transition:.3s}.pill{display:inline-block;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:7px 11px;font-weight:800;margin:3px}.timeline{display:grid;gap:8px}.step{display:grid;grid-template-columns:160px 110px 1fr;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}.step.now{background:#eff6ff;border-color:#60a5fa}.log{height:390px;overflow:auto;background:#071224;color:#dbeafe;border-radius:14px;padding:13px;font:13px Consolas,monospace;white-space:pre-wrap}.downloads{display:flex;flex-wrap:wrap;gap:8px}.download{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:8px 10px;font-weight:800;text-decoration:none;color:#1d4ed8}.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.metrics div{background:#f8fbff;border:1px solid var(--line);border-radius:12px;padding:10px}.metrics b,.metrics span{display:block}.metrics span{font-size:18px;font-weight:900}.footer{font-size:13px;color:var(--muted);margin:18px 0}.mascot{min-height:240px;background:radial-gradient(circle at 80% 20%,#dff7ff,transparent 35%),#fff}.hero{font-size:80px;text-align:center;filter:drop-shadow(0 10px 14px #2563eb33);animation:pulse 1.8s infinite}.warn{color:#b7791f;font-weight:800}@keyframes pulse{50%{transform:scale(1.06)}}@media(max-width:900px){.grid,.three,.checks,.metrics{grid-template-columns:1fr}.step{grid-template-columns:1fr}}
+:root{--bg:#eef6fb;--surface:#fff;--line:#cfe3fb;--ink:#09213f;--muted:#5c6b82;--blue:#2563eb;--cyan:#06b6d4;--danger:#dc2626;--ok:#059669;--warn:#b7791f}*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f8fbff,#eaf6ff);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}.wrap{max-width:1260px;margin:0 auto;padding:22px}h1{margin:0;font-size:30px}.sub{color:var(--muted)}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px}.brand{display:flex;align-items:center;gap:12px}.sigil{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:white;font-size:28px;box-shadow:0 12px 28px #2563eb33}.card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 36px #2563eb14;margin-bottom:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.field{margin-bottom:10px}.field label{display:block;font-weight:800;margin-bottom:5px}input,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfdff}.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.check{border:1px solid var(--line);border-radius:10px;background:#f7fbff;padding:9px;font-weight:700}.drop{display:block;border:2px dashed #93c5fd;border-radius:16px;background:#f7fbff;padding:24px;text-align:center;cursor:pointer}.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:900;cursor:pointer;text-decoration:none;display:inline-block}.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:white}.secondary{background:#eaf3ff;color:#1d4ed8}.bar{height:17px;background:#dbeafe;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#2563eb,#06b6d4);transition:.3s}.pill{display:inline-block;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:7px 11px;font-weight:800;margin:3px}.timeline{display:grid;gap:8px}.step{display:grid;grid-template-columns:160px 110px 1fr;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}.step.now{background:#eff6ff;border-color:#60a5fa}.log{height:390px;overflow:auto;background:#071224;color:#dbeafe;border-radius:14px;padding:13px;font:13px Consolas,monospace;white-space:pre-wrap}.downloads{display:flex;flex-wrap:wrap;gap:8px}.download{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:8px 10px;font-weight:800;text-decoration:none;color:#1d4ed8}.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.metrics div{background:#f8fbff;border:1px solid var(--line);border-radius:12px;padding:10px}.metrics b,.metrics span{display:block}.metrics span{font-size:18px;font-weight:900}.footer{font-size:13px;color:var(--muted);margin:18px 0}.mascot{min-height:240px;background:radial-gradient(circle at 80% 20%,#dff7ff,transparent 35%),#fff}.hero{font-size:80px;text-align:center;filter:drop-shadow(0 10px 14px #2563eb33);animation:pulse 1.8s infinite}.warn{color:#b7791f;font-weight:800}.media-card{margin-top:14px;background:#f8fbff;border:1px solid var(--line);border-radius:16px;padding:12px}.media-card.compact{margin-top:12px}.media-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.media-head h3{margin:0 0 8px}.waiting-video{width:100%;max-height:280px;object-fit:contain;background:#020617;border-radius:12px;border:1px solid #0f172a}.video-placeholder{min-height:170px;display:grid;place-items:center;text-align:center;background:#0f172a;color:#e5e7eb;border-radius:12px;padding:18px}.media-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.small-media{padding:8px 10px;font-size:13px}@keyframes pulse{50%{transform:scale(1.06)}}@media(max-width:900px){.grid,.three,.checks,.metrics{grid-template-columns:1fr}.step{grid-template-columns:1fr}}
 """
 
 
@@ -461,7 +553,7 @@ def index_page() -> bytes:
 <div class='card'><div class='grid'><div class='field'><label>Preset</label><select id='preset' name='preset'>{options}</select></div><div class='field'><label>Author (-a)</label><input name='author' value='yarGen GUI'></div></div><p class='sub'>Beginner mặc định tạo command đơn giản: -m, -o, -a, -p, tham số số, --score. Advanced chỉ thêm flag khi user tự chọn.</p></div>
 <div class='grid'>
  <div class='card'><h2>Samples</h2><label class='drop' for='samples'><b>Drop files here or click to choose</b><br><span class='sub'>Supports multiple files and .zip archives.</span></label><input required multiple type='file' id='samples' name='samples' style='display:none'><p id='files' class='sub'>No files selected.</p><div class='field'><label>Family name</label><input name='family' value='malware_family'></div><div class='field'><label>Output YARA file</label><input name='output_name' value='malware_family.yar'></div><div class='field'><label>Reference (-r, optional)</label><input name='reference'></div></div>
- <div class='card mascot'><div class='hero'>⚔️</div><h2>YARA Web Forge</h2><p class='sub'>Server không execute malware. Server chỉ lưu sample rồi chạy yarGen.py với folder sample đó.</p><p><button class='btn primary' type='submit'>Upload & Generate</button> <button class='btn secondary' type='button' onclick='previewCmd()'>Xem command</button></p><pre id='cmdprev' class='sub'></pre></div>
+ <div class='card mascot'><div class='hero'>⚔️</div><h2>YARA Web Forge</h2><p class='sub'>Server không execute malware. Server chỉ lưu sample rồi chạy yarGen.py với folder sample đó.</p><p><button class='btn primary' type='submit'>Upload & Generate</button> <button class='btn secondary' type='button' onclick='previewCmd()'>Xem command</button></p><pre id='cmdprev' class='sub'></pre>{media_html(compact=True)}</div>
 </div>
 <div class='card'><h2>Options giống GUI</h2><div class='three'><div class='field'><label>License (-l)</label><input name='license'></div><div class='field'><label>Prefix/description (-p)</label><input id='prefix' name='prefix' value='Malware family rule'></div><div class='field'><label>Identifier file (-b)</label><input name='identifier_file'></div><div class='field'><label>Min string length (-y)</label><input id='y' name='y' value='8'></div><div class='field'><label>Min score (-z)</label><input id='z' name='z' value='0'></div><div class='field'><label>High specific score (-x)</label><input id='x' name='x' value='30'></div><div class='field'><label>Super rule min overlap (-w)</label><input id='w' name='w' value='5'></div><div class='field'><label>Max string length (-s)</label><input id='s' name='s' value='128'></div><div class='field'><label>Max strings per rule (-rc)</label><input id='rc' name='rc' value='20'></div><div class='field'><label>Max file size MB (-fs)</label><input id='fs' name='fs' value='10'></div><div class='field'><label>Filesize multiplier (-fm)</label><input id='fm' name='fm' value='3'></div><div class='field'><label>Opcode number (-n)</label><input id='n' name='n' value='3'></div></div><h3>Advanced flags</h3><div class='checks'>{flag_html}</div></div>
 </form>
@@ -476,6 +568,7 @@ function applyPreset(){{
 document.getElementById('preset').addEventListener('change',applyPreset); applyPreset();
 document.getElementById('samples').addEventListener('change',e=>{{const fs=[...e.target.files]; document.getElementById('files').textContent=fs.length?fs.map(f=>`${{f.name}} (${{Math.round(f.size/1024)}} KB)`).join(', '):'No files selected.';}});
 function previewCmd(){{const flags=FLAGS.filter(f=>document.getElementById(f).checked).map(f=>'--'+f).join(' '); const e=document.getElementById('strings').checked?' -e <job>/strings_out':''; document.getElementById('cmdprev').textContent=`python -W ignore yarGen.py -m <job>/samples -o <job>/rules/malware_family.yar${{e}} -a "yarGen GUI" -p "Malware family rule" -y 8 -z 0 -x 30 -w 5 -s 128 -rc 20 -fs 10 -fm 3 -n 3 ${{flags}}`;}}
+{media_script()}
 </script>"""
     return page("Tạo YARA rule", body)
 
@@ -604,6 +697,7 @@ def job_page(job: Job) -> bytes:
                 <p class='sub'>Static analysis complete. Rules ready for deployment.</p>
             </div>
         </div>
+        {media_html(compact=True)}
     </div>
 </div>
 
@@ -762,6 +856,7 @@ async function tick(){{
 // Initialize
 timeline({stage_json},{status_json}); 
 setTimeout(tick,1000);
+{media_script()}
 </script>""")
 
 
@@ -776,10 +871,61 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
+    def send_media_file(self, fp: Path) -> None:
+        """Serve video/audio with basic Range support for browser playback."""
+        try:
+            size = fp.stat().st_size
+            ctype = mimetypes.guess_type(str(fp))[0] or "application/octet-stream"
+            range_header = self.headers.get("Range", "")
+            start, end = 0, size - 1
+            status = 200
+            if range_header.startswith("bytes="):
+                status = 206
+                spec = range_header.split("=", 1)[1].split(",", 1)[0].strip()
+                if "-" in spec:
+                    a, b = spec.split("-", 1)
+                    if a:
+                        start = max(0, int(a))
+                    if b:
+                        end = min(size - 1, int(b))
+                if start > end:
+                    self.send_error(416)
+                    return
+            length = end - start + 1
+            self.send_response(status)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Accept-Ranges", "bytes")
+            self.send_header("Content-Length", str(length))
+            if status == 206:
+                self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            with fp.open("rb") as fh:
+                fh.seek(start)
+                remaining = length
+                while remaining > 0:
+                    chunk = fh.read(min(1024 * 1024, remaining))
+                    if not chunk:
+                        break
+                    self.wfile.write(chunk)
+                    remaining -= len(chunk)
+        except Exception:
+            self.send_error(500)
+
     def do_GET(self) -> None:
         path = urlparse(self.path).path
         if path == "/favicon.ico":
             return self.send_bytes(b"", "image/x-icon", 204)
+        if path == "/media/video":
+            video = first_media_file("video", MEDIA_VIDEO_EXTENSIONS, "video.mp4")
+            if not video:
+                return self.send_error(404)
+            return self.send_media_file(video)
+        if path == "/media/report.mp3":
+            audio = first_media_file("music", MEDIA_AUDIO_EXTENSIONS, "report.mp3")
+            if not audio:
+                return self.send_error(404)
+            return self.send_media_file(audio)
         if path == "/":
             return self.send_bytes(index_page())
         if path == "/jobs":
