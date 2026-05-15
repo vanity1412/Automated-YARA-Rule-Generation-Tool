@@ -1,108 +1,179 @@
 # yarGen GUI - Malware Family YARA Builder
 
-> Công cụ desktop hỗ trợ **tự động tạo chữ ký YARA từ các đặc trưng chung của một họ mã độc**.  
-> GUI này **không thay đổi engine `yarGen.py`**, mà đóng vai trò là lớp giao diện, workflow, validation, monitoring, testing và reporting để giúp sinh viên/analyst dễ sử dụng yarGen hơn trong môn **Phân tích mã độc**.
+<p align="center">
+  <b>Công cụ desktop hỗ trợ tự động tạo chữ ký YARA từ đặc trưng chung của một họ mã độc</b>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-blue" />
+  <img src="https://img.shields.io/badge/GUI-Tkinter%2FTTK-green" />
+  <img src="https://img.shields.io/badge/YARA-Rule%20Generation-red" />
+  <img src="https://img.shields.io/badge/Use-Malware%20Analysis-orange" />
+</p>
 
 ---
 
-## 1. Mục tiêu của công cụ
+## Giới thiệu
 
-Trong quá trình học và thực hành phân tích mã độc, sinh viên thường phải:
+**yarGen GUI - Malware Family YARA Builder** là công cụ desktop hỗ trợ quy trình tạo chữ ký YARA từ nhiều mẫu mã độc thuộc cùng một họ malware.
 
-1. Thu thập nhiều mẫu mã độc cùng một họ.
-2. Phân tích tĩnh để trích xuất strings, hash, PE info, import/export.
-3. Tìm các đặc trưng chung giữa các mẫu.
-4. Viết YARA rule thủ công.
-5. Kiểm tra cú pháp rule.
-6. Test rule trên malware và goodware.
-7. Đánh giá false positive.
-8. Viết báo cáo.
+Công cụ này sử dụng `yarGen.py` làm engine chính để trích xuất đặc trưng và sinh YARA rule. GUI không thay đổi thuật toán lõi của yarGen, mà bổ sung giao diện, workflow, kiểm tra môi trường, giám sát tiến trình, validate rule, test false positive và xuất báo cáo.
 
-Công cụ này giúp tự động hóa và trực quan hóa các bước trên:
+Mục tiêu chính của project là phục vụ đề tài:
+
+> **Xây dựng công cụ tự động tạo chữ ký YARA từ các đặc trưng chung của một họ mã độc**
+
+---
+
+## Công cụ này giải quyết vấn đề gì?
+
+Trong môn **Phân tích mã độc**, sau khi phân tích nhiều mẫu malware cùng family, analyst thường cần tạo chữ ký phát hiện để nhận diện các biến thể tương tự.
+
+Nếu làm thủ công, quy trình thường gồm:
+
+1. Thu thập mẫu malware cùng họ.
+2. Phân tích tĩnh từng mẫu.
+3. Trích xuất strings, hash, PE info, import/export.
+4. Tìm đặc trưng chung giữa các mẫu.
+5. Viết YARA rule.
+6. Validate cú pháp.
+7. Test trên malware.
+8. Test trên goodware để kiểm false positive.
+9. Viết báo cáo.
+
+Công cụ này tự động hóa và trực quan hóa workflow đó:
 
 ```text
 Malware samples cùng family
 → phân tích sample
 → chạy yarGen.py
-→ tạo rule YARA
-→ giám sát quá trình generate
-→ validate rule
+→ tạo YARA rule
+→ giám sát tiến trình
+→ validate syntax
 → test malware/goodware
 → chấm điểm rule
 → xuất báo cáo
 ```
 
-Công cụ phù hợp với đề tài:
-
-```text
-Xây dựng công cụ tự động tạo chữ ký YARA từ các đặc trưng chung của một họ mã độc
-```
-
 ---
 
-## 2. Công cụ này dùng để làm gì?
+## Tính năng chính
 
-Công cụ được dùng để hỗ trợ quá trình **phân tích mã độc ứng dụng** và **xây dựng chữ ký phát hiện mã độc**.
+### 1. Workflow GUI dễ dùng
 
-Cụ thể:
+- Sidebar theo từng bước.
+- Home Dashboard hướng dẫn người mới.
+- Basic Mode cho người mới.
+- Advanced Mode cho người dùng kỹ thuật.
+- Light/Dark theme.
+- Hỗ trợ Tiếng Việt và English.
 
-- Nhận vào nhiều mẫu malware cùng một họ.
-- Trích xuất đặc trưng tĩnh như strings, hash, file type.
-- Gọi engine `yarGen.py` để sinh YARA rule.
-- Dùng goodware database để giảm false positive.
-- Sinh SIMPLE rules và SUPER rules.
-- Validate cú pháp YARA.
-- Test rule trên malware folder.
-- Test rule trên goodware/benign folder.
-- Chấm điểm rule dựa trên `score` của yarGen.
-- Xuất báo cáo phục vụ demo, bài lab hoặc đồ án.
+### 2. Kiểm tra môi trường
 
----
+Tab **Setup** kiểm tra:
 
-## 3. Điểm khác biệt so với chạy yarGen CLI
+- Python executable.
+- Working directory.
+- `yarGen.py`.
+- `requirements.txt`.
+- Folder `dbs/`.
+- Folder `3rdparty/`.
+- Các module Python cần thiết như `pefile`, `lxml`, `yara`.
 
-Nếu chạy yarGen CLI thủ công, bạn thường chỉ nhận được file `.yar`.
+### 3. Phân tích sample
 
-Ví dụ:
+Tab **Samples** hỗ trợ:
 
-```powershell
-python yarGen.py -m samples\TrickBot -o rules\trickbot.yar --score --strings
-```
+- Scan folder malware.
+- Tính MD5.
+- Tính SHA256.
+- Nhận diện file type.
+- Cảnh báo file nén chưa giải nén.
+- Trích strings nhẹ để hỗ trợ clustering.
+- Gom cụm các sample giống nhau.
 
-GUI này bổ sung thêm:
+### 4. Malware Family Workflow
 
-- Giao diện dễ dùng.
-- Sidebar workflow rõ ràng.
-- Basic Mode / Advanced Mode.
-- Chọn preset phù hợp từng loại malware.
-- Kiểm tra môi trường.
-- Kiểm tra DB.
-- Phân tích sample trước khi generate.
-- Theo dõi log realtime.
-- Progress dashboard.
+Tab **Family** hỗ trợ:
+
+- Nhập tên malware family.
+- Tạo `identifier.txt`.
+- Kiểm tra số lượng mẫu.
+- Áp preset family rule.
+- Đảm bảo người dùng đang tạo rule từ nhiều mẫu cùng họ.
+
+### 5. Generate YARA rule
+
+Tab **Generate** hỗ trợ:
+
+- Chọn malware sample folder.
+- Chọn output `.yar`.
+- Chọn string export folder.
+- Chọn preset.
+- Chọn DB mode.
+- Xem command yarGen trước khi chạy.
+- Lưu command `.bat` hoặc `.sh`.
+- Chạy `yarGen.py` bằng subprocess.
+
+### 6. Monitor realtime
+
+Tab **Monitor** hiển thị:
+
+- Log realtime.
+- Progress bar.
+- Stage table.
 - Preview file `.yar`.
-- Validate syntax.
-- Test malware/goodware.
-- Chấm điểm rule.
-- Xuất Markdown/CSV/HTML report.
-- Hỗ trợ Tiếng Việt / English.
-- Light / Dark theme.
+- Thống kê số rule, simple rule, super rule và strings.
+
+### 7. Validate và Test
+
+Tab **Validate/Test** hỗ trợ:
+
+- Validate syntax bằng `yara-python` hoặc `yarac`.
+- Test rule trên malware folder.
+- Test rule trên goodware folder.
+- Phát hiện false positive.
+- Export CSV/HTML report.
+
+### 8. Database Inspector
+
+Tab **Database** hỗ trợ:
+
+- Xem trạng thái folder `dbs/`.
+- Xem các nhóm DB:
+  - `good-strings`
+  - `good-opcodes`
+  - `good-exports`
+  - `good-imphashes`
+- Xem size và số entry.
+- Preview DB.
+- Tạo/cập nhật goodware DB.
+
+### 9. Rule Score Report
+
+Tab **Reports** hỗ trợ:
+
+- Đọc file `.yar/.yara`.
+- Trích xuất score của từng string.
+- Tính Max Score, Avg Score, Min Score.
+- Đánh giá độ tin cậy của từng rule.
+- Vẽ biểu đồ Max Score.
+- Xuất Markdown/CSV report.
 
 ---
 
-## 4. Kiến trúc mã nguồn
+## Kiến trúc project
 
-Dự án được tổ chức theo kiến trúc modular để dễ bảo trì và sửa lỗi.
+Project được tách theo kiến trúc modular để dễ sửa và mở rộng.
 
 ```text
-yargen_gui_redesign_v3/
+.
 ├── main.py
 ├── app.py
+├── requirements.txt
 ├── README.md
-├── settings.json                 # Tạo tự động sau khi chạy app
 │
 ├── core/
-│   ├── __init__.py
 │   ├── config.py
 │   ├── settings.py
 │   ├── i18n.py
@@ -115,13 +186,11 @@ yargen_gui_redesign_v3/
 │   └── runner.py
 │
 ├── widgets/
-│   ├── __init__.py
 │   ├── sidebar.py
 │   ├── statusbar.py
 │   └── cards.py
 │
 └── screens/
-    ├── __init__.py
     ├── welcome_screen.py
     ├── home_screen.py
     ├── setup_screen.py
@@ -137,853 +206,39 @@ yargen_gui_redesign_v3/
 
 ---
 
-## 5. Vai trò từng file/folder
+## Vai trò các module
 
-### `main.py`
-
-Entry point của ứng dụng.
-
-Chạy app bằng:
-
-```powershell
-python main.py
-```
-
-Nội dung chính:
-
-```python
-from app import YarGenApp
-
-if __name__ == "__main__":
-    YarGenApp().mainloop()
-```
+| File/Folder | Chức năng |
+|---|---|
+| `main.py` | Entry point của app |
+| `app.py` | Tạo main window, top bar, sidebar, status bar |
+| `core/config.py` | Cấu hình chung, preset, extension, DB prefix |
+| `core/settings.py` | Đọc/ghi `settings.json` |
+| `core/i18n.py` | Hệ thống song ngữ Việt/Anh |
+| `core/state.py` | Biến dùng chung trong GUI |
+| `core/utils.py` | Hàm tiện ích về path, browse, open folder |
+| `core/yargen_command.py` | Build command yarGen CLI |
+| `core/validators.py` | Validate môi trường |
+| `core/runner.py` | Chạy subprocess và đọc log realtime |
+| `core/yara_score.py` | Phân tích score trong YARA rule |
+| `core/report_builder.py` | Xuất report CSV/HTML |
+| `widgets/` | Các widget dùng lại |
+| `screens/` | Các màn hình chức năng |
 
 ---
 
-### `app.py`
+## Cài đặt
 
-Tạo cửa sổ chính của GUI.
+### Yêu cầu
 
-Chức năng:
+- Python 3.10+
+- Windows 10/11 khuyến nghị
+- `yarGen.py`
+- Folder `dbs/`
+- Folder `3rdparty/`
+- Các package Python cần thiết
 
-- Tạo main window.
-- Tạo top bar.
-- Tạo sidebar.
-- Tạo status bar.
-- Load các màn hình trong `screens/`.
-- Quản lý chuyển màn hình.
-- Quản lý language/theme/mode.
-- Khởi tạo `AppState`, `SettingsManager`, `I18n`, `ProcessRunner`.
-
----
-
-### `core/config.py`
-
-Chứa cấu hình cố định:
-
-- Tên app.
-- Version.
-- Danh sách extension malware/script/PE.
-- Danh sách prefix DB.
-- Danh sách sidebar navigation.
-- Mô tả preset.
-
-Sửa file này nếu muốn:
-
-- Đổi version.
-- Thêm extension mới.
-- Thêm preset description.
-- Đổi danh sách sidebar.
-
----
-
-### `core/settings.py`
-
-Quản lý file `settings.json`.
-
-Lưu các cấu hình:
-
-- Ngôn ngữ.
-- Theme.
-- Basic/Advanced Mode.
-- DB mode mặc định.
-- Số dòng log giữ lại.
-
----
-
-### `core/i18n.py`
-
-Quản lý song ngữ Tiếng Việt / English.
-
-Ví dụ:
-
-```python
-TRANSLATIONS = {
-    "vi": {
-        "generate.title": "Tạo YARA rule"
-    },
-    "en": {
-        "generate.title": "Generate YARA Rules"
-    }
-}
-```
-
-Muốn thêm text mới thì thêm key vào file này.
-
----
-
-### `core/state.py`
-
-Chứa toàn bộ biến dùng chung cho GUI.
-
-Ví dụ:
-
-- Đường dẫn Python.
-- Đường dẫn `yarGen.py`.
-- Working directory.
-- Malware folder.
-- Output rule path.
-- Rule parameters.
-- DB mode.
-- Test folder.
-- Report folder.
-- Progress state.
-- Last command.
-- Last test result.
-
-Đây là file quan trọng để các màn hình dùng chung dữ liệu.
-
----
-
-### `core/utils.py`
-
-Chứa các hàm tiện ích:
-
-- Mở file/folder.
-- Browse file/folder.
-- Chuẩn hóa path.
-- Tạo dòng input path.
-- Quote command.
-- Tạo safe identifier.
-
----
-
-### `core/yargen_command.py`
-
-Build command CLI để chạy `yarGen.py`.
-
-Ví dụ GUI sẽ build command dạng:
-
-```powershell
-python -W ignore yarGen.py -m samples\TrickBot -o rules\trickbot.yar -a "yarGen GUI" -p "TrickBot family rule" --score --strings
-```
-
-Nếu muốn sửa cách tạo command, sửa file này.
-
----
-
-### `core/validators.py`
-
-Kiểm tra môi trường:
-
-- Python executable.
-- Working directory.
-- `yarGen.py`.
-- `requirements.txt`.
-- `dbs/`.
-- `3rdparty/strings.xml`.
-- Python module `pefile`, `lxml`, `yara`.
-
----
-
-### `core/runner.py`
-
-Chạy subprocess.
-
-Chức năng:
-
-- Chạy command yarGen.
-- Đọc log realtime.
-- Đẩy log lên Monitor.
-- Cập nhật trạng thái Running/Idle.
-- Gọi callback sau khi generate xong.
-
----
-
-### `core/yara_score.py`
-
-Phân tích file `.yar/.yara`.
-
-Chức năng:
-
-- Tách từng rule.
-- Đếm số strings.
-- Trích xuất score trong comment:
-
-```yara
-/* score: '41.00' */
-```
-
-- Tính:
-  - Max Score.
-  - Avg Score.
-  - Min Score.
-  - Confidence.
-  - Số Goodware String.
-  - Số score âm.
-  - Rule có phải Super Rule hay không.
-- Tạo báo cáo Markdown.
-
----
-
-### `core/report_builder.py`
-
-Xuất báo cáo test:
-
-- CSV.
-- HTML.
-
-Dùng cho kết quả scan malware/goodware.
-
----
-
-### `widgets/sidebar.py`
-
-Sidebar bên trái.
-
-Chứa các mục:
-
-- Home
-- Setup
-- Samples
-- Family
-- Generate
-- Monitor
-- Validate/Test
-- Database
-- Reports
-- Settings
-
----
-
-### `widgets/statusbar.py`
-
-Status bar dưới cùng.
-
-Hiển thị:
-
-- Environment status.
-- Project path.
-- Preset đang dùng.
-- Output rule.
-- Running status.
-
----
-
-### `widgets/cards.py`
-
-Widget card dùng ở Home Dashboard.
-
----
-
-### `screens/`
-
-Mỗi file trong `screens/` là một màn hình chức năng riêng.
-
-Điều này giúp dễ sửa hơn so với gom toàn bộ GUI vào một file lớn.
-
----
-
-## 6. Các màn hình chức năng
-
-### 6.1 Welcome Screen
-
-File:
-
-```text
-screens/welcome_screen.py
-```
-
-Chức năng:
-
-- Hiện khi chạy app lần đầu.
-- Cho chọn:
-  - Tiếng Việt.
-  - English.
-- Có tùy chọn remember language.
-
----
-
-### 6.2 Home Dashboard
-
-File:
-
-```text
-screens/home_screen.py
-```
-
-Đây là màn hình tổng quan workflow.
-
-Hiển thị các bước chính:
-
-```text
-Setup → Samples → Generate → Monitor → Validate/Test → Reports
-```
-
-Dùng để hướng dẫn người mới biết nên bắt đầu từ đâu.
-
----
-
-### 6.3 Setup
-
-File:
-
-```text
-screens/setup_screen.py
-```
-
-Chức năng:
-
-- Chọn Python executable.
-- Chọn Working directory.
-- Chọn `yarGen.py`.
-- Validate environment.
-- Install requirements.
-- Download/update DBs.
-
-Các nút chính:
-
-- `Validate environment`
-- `Install requirements`
-- `Download / update DBs`
-- `Open project folder`
-
-Mục tiêu:
-
-```text
-Đảm bảo môi trường sẵn sàng trước khi generate rule.
-```
-
----
-
-### 6.4 Samples
-
-File:
-
-```text
-screens/samples_screen.py
-```
-
-Chức năng:
-
-- Chọn folder malware samples.
-- Scan folder.
-- Tính:
-  - MD5.
-  - SHA256.
-  - File type.
-  - File size.
-  - Archive warning.
-- Trích strings nhẹ để hỗ trợ clustering.
-- Cluster các sample giống nhau.
-- Generate rule per cluster.
-
-Dùng khi:
-
-```text
-Bạn có nhiều mẫu malware và muốn kiểm tra chúng có cùng family không.
-```
-
----
-
-### 6.5 Family
-
-File:
-
-```text
-screens/family_screen.py
-```
-
-Chức năng:
-
-- Nhập tên malware family.
-- Nhập mục tiêu rule.
-- Nhập số sample tối thiểu.
-- Tạo `identifier.txt`.
-- Áp preset Family Rule.
-- Phân tích folder family.
-
-Mục tiêu:
-
-```text
-Đảm bảo người dùng đang tạo rule từ nhiều mẫu cùng một họ mã độc.
-```
-
----
-
-### 6.6 Generate
-
-File:
-
-```text
-screens/generate_screen.py
-```
-
-Đây là màn hình quan trọng nhất.
-
-Chức năng:
-
-- Chọn preset.
-- Chọn DB Mode.
-- Chọn malware folder.
-- Chọn output `.yar`.
-- Chọn string export folder.
-- Nhập author/reference/license/prefix.
-- Cấu hình tham số yarGen.
-- Bật/tắt option CLI.
-- Preview command.
-- Generate rule.
-- Stop process.
-- Save command `.bat` hoặc `.sh`.
-
----
-
-### 6.7 Monitor
-
-File:
-
-```text
-screens/monitor_screen.py
-```
-
-Chức năng:
-
-- Hiển thị log realtime.
-- Hiển thị progress bar.
-- Hiển thị stage table:
-  - Preflight
-  - Load goodware DB
-  - Extract strings/opcodes
-  - Generate statistics
-  - Generate simple/super rules
-  - Validate/Test
-- Preview output rule.
-- Hiển thị summary:
-  - số rule.
-  - số simple rule.
-  - số super rule.
-  - số strings.
-  - số `$x`.
-  - số `$s`.
-
-Mục tiêu:
-
-```text
-Giúp người dùng thấy yarGen đang chạy tới đâu, tránh cảm giác app bị treo.
-```
-
----
-
-### 6.8 Validate/Test
-
-File:
-
-```text
-screens/validate_screen.py
-```
-
-Chức năng:
-
-- Validate YARA syntax.
-- Test rule trên malware folder.
-- Test rule trên goodware folder.
-- Báo false positive.
-- Export CSV.
-- Export HTML.
-
-Workflow:
-
-```text
-Validate syntax
-→ Test malware
-→ Test goodware
-→ Export report
-```
-
----
-
-### 6.9 Database
-
-File:
-
-```text
-screens/database_screen.py
-```
-
-Chức năng:
-
-- Xem trạng thái DB trong folder `dbs/`.
-- Xem nhóm DB:
-  - good-strings
-  - good-opcodes
-  - good-exports
-  - good-imphashes
-- Xem size.
-- Xem số entry.
-- Preview DB.
-- Tạo/cập nhật Goodware DB từ folder phần mềm sạch.
-
----
-
-### 6.10 Reports
-
-File:
-
-```text
-screens/reports_screen.py
-```
-
-Chức năng:
-
-- Chọn file `.yar/.yara`.
-- Analyze Rule Scores.
-- Vẽ biểu đồ Max Score.
-- Tạo báo cáo Markdown.
-- Export Markdown.
-- Export CSV.
-
-Báo cáo gồm:
-
-- Tên rule.
-- Số strings.
-- Số score.
-- Max Score.
-- Avg Score.
-- Min Score.
-- Confidence.
-- Super Rule hay không.
-- Nhận xét rule tốt nhất.
-
----
-
-### 6.11 Settings
-
-File:
-
-```text
-screens/settings_screen.py
-```
-
-Chức năng:
-
-- Đổi language.
-- Đổi theme.
-- Đổi Basic/Advanced Mode.
-- Save settings.
-- Reset settings.
-
----
-
-## 7. Preset trong Generate
-
-### Beginner
-
-Dành cho lần chạy đầu tiên.
-
-Mục tiêu:
-
-```text
-Dễ dùng, cấu hình cân bằng.
-```
-
----
-
-### PE Deep
-
-Dành cho malware PE.
-
-Có thể bật:
-
-- `--strings`
-- `--opcodes`
-- `--oe`
-- `--debug`
-
-Lưu ý:
-
-```text
-Chạy chậm hơn và tốn RAM hơn.
-```
-
----
-
-### Script Malware
-
-Dành cho:
-
-- PowerShell.
-- JavaScript.
-- VBS.
-- BAT/CMD.
-
-Tập trung vào strings script.
-
----
-
-### Webshell
-
-Dành cho:
-
-- PHP.
-- ASP.
-- ASPX.
-- JSP.
-
----
-
-### Fast Scan
-
-Dành cho demo nhanh hoặc triage.
-
-Dùng DB runtime nhẹ:
-
-```text
-Fast no-opcodes DB
-```
-
-Không sửa folder `dbs` gốc.
-
----
-
-### TrickBot Demo
-
-Preset cân bằng cho mẫu TrickBot PE đã giải nén.
-
-Thường bật:
-
-- `--score`
-- `--strings`
-
-Và dùng tham số dễ sinh rule hơn.
-
----
-
-### Loose Debug
-
-Chỉ dùng để debug khi yarGen sinh 0 rule.
-
-Không nên dùng làm rule cuối.
-
-Vì preset này thường rất lỏng:
-
-- Min score thấp.
-- High score thấp.
-- Có thể bật `--noscorefilter`.
-
----
-
-## 8. DB Mode
-
-### Full quality DB
-
-Dùng toàn bộ DB goodware.
-
-Ưu điểm:
-
-- Rule tốt hơn.
-- Ít false positive hơn.
-
-Nhược điểm:
-
-- Load lâu.
-- Tốn RAM.
-
-Dùng khi:
-
-```text
-Muốn tạo rule cuối hoặc demo chất lượng.
-```
-
----
-
-### Fast strings DB
-
-Chỉ ưu tiên DB strings nhẹ.
-
-Ưu điểm:
-
-- Nhanh hơn full DB.
-
-Dùng khi:
-
-```text
-Muốn demo nhanh nhưng vẫn có lọc strings.
-```
-
----
-
-### Fast no-opcodes DB
-
-Bỏ qua opcodes DB nặng.
-
-Ưu điểm:
-
-- Chạy nhanh hơn.
-- Phù hợp demo trên máy yếu.
-
-Dùng khi:
-
-```text
-Muốn triage nhanh hoặc tránh lag.
-```
-
----
-
-## 9. Goodware DB là gì?
-
-Goodware DB là database chứa đặc trưng của phần mềm sạch.
-
-Ví dụ string phổ biến trong file sạch:
-
-```text
-kernel32.dll
-LoadLibraryA
-GetProcAddress
-This program cannot be run in DOS mode
-System.Drawing
-```
-
-Nếu dùng các string này trong rule, rule dễ match nhầm goodware.
-
-Goodware DB giúp yarGen:
-
-- Trừ điểm string phổ biến.
-- Loại string không đặc trưng.
-- Giảm false positive.
-
-Folder DB thường nằm ở:
-
-```text
-C:\DACK_MALWARE\dbs
-```
-
-Các nhóm DB:
-
-```text
-good-strings-part*.db
-good-opcodes-part*.db
-good-exports-part*.db
-good-imphashes-part*.db
-```
-
----
-
-## 10. Score trong YARA rule là gì?
-
-Khi bật `--score`, yarGen thêm comment score vào từng string.
-
-Ví dụ:
-
-```yara
-$x1 = "ReflectiveLoader" ascii fullword /* score: '41.00' */
-$s2 = "kernel32.dll" ascii fullword /* score: '-5.00' */
-```
-
-Ý nghĩa:
-
-```text
-Score cao  → string đặc trưng hơn, đáng tin hơn
-Score thấp → string bình thường
-Score âm   → string phổ biến hoặc có nguy cơ false positive
-```
-
----
-
-## 11. Rule Score Report đánh giá như thế nào?
-
-Công cụ phân tích từng rule và tính:
-
-- Số strings.
-- Số strings có score.
-- Score cao nhất.
-- Score trung bình.
-- Score thấp nhất.
-- Số Goodware String.
-- Số score âm.
-- Rule có phải Super Rule không.
-
-Mức đánh giá:
-
-```text
-Max Score > 35        → Rất cao
-Max Score > 25        → Cao
-Max Score > 10        → Trung bình
-Max Score <= 10       → Thấp
-Không có score        → Không đủ dữ liệu
-```
-
-Lưu ý:
-
-```text
-Score report là điểm hỗ trợ review/demo, không phải điểm chính thức của YARA.
-```
-
----
-
-## 12. SIMPLE Rule và SUPER Rule
-
-### SIMPLE Rule
-
-Rule được tạo cho từng file hoặc từng sample.
-
-Ưu điểm:
-
-- Dễ sinh.
-- Có thể bắt được mẫu cụ thể.
-
-Nhược điểm:
-
-- Có thể quá file-specific.
-
----
-
-### SUPER Rule
-
-Rule được tạo từ các đặc trưng chung của nhiều sample.
-
-Ưu điểm:
-
-- Phù hợp đề tài.
-- Có khả năng đại diện cho một family/cluster.
-- Hữu ích để phát hiện biến thể cùng họ.
-
-Khi thuyết trình nên nhấn mạnh:
-
-```text
-SUPER Rule thể hiện việc công cụ tìm đặc trưng chung giữa nhiều mẫu malware cùng family.
-```
-
----
-
-## 13. Cài đặt
-
-### 13.1 Yêu cầu
-
-- Windows 10/11 hoặc Linux/macOS.
-- Python 3.10+ khuyến nghị.
-- `yarGen.py`.
-- Folder `dbs/`.
-- Folder `3rdparty/strings.xml`.
-- Python packages:
-  - `pefile`
-  - `lxml`
-  - `yara-python` nếu muốn validate/test bằng Python.
-
----
-
-### 13.2 Cài requirements
-
-Nếu project có `requirements.txt`:
+### Cài package
 
 ```powershell
 pip install -r requirements.txt
@@ -995,7 +250,7 @@ Nếu thiếu `yara-python`:
 pip install yara-python
 ```
 
-Nếu thiếu `scandir` khi chạy yarGen cũ:
+Nếu dùng yarGen cũ và gặp lỗi thiếu `scandir`:
 
 ```powershell
 pip install scandir
@@ -1003,23 +258,19 @@ pip install scandir
 
 ---
 
-## 14. Cách chạy khuyến nghị
+## Cách chạy
 
-Giả sử project chính ở:
+Khuyến nghị đặt source GUI cùng thư mục với `yarGen.py`, `dbs/`, `samples/`.
 
-```text
-C:\DACK_MALWARE
-```
-
-Nên copy source GUI vào thẳng `C:\DACK_MALWARE` để cấu trúc là:
+Ví dụ:
 
 ```text
 C:\DACK_MALWARE
 ├── main.py
 ├── app.py
 ├── core\
-├── screens\
 ├── widgets\
+├── screens\
 ├── yarGen.py
 ├── dbs\
 ├── 3rdparty\
@@ -1029,7 +280,14 @@ C:\DACK_MALWARE
 └── reports\
 ```
 
-Chạy:
+Chạy app:
+
+```powershell
+cd C:\DACK_MALWARE
+python main.py
+```
+
+Nếu dùng virtual environment:
 
 ```powershell
 cd C:\DACK_MALWARE
@@ -1038,297 +296,259 @@ cd C:\DACK_MALWARE
 
 ---
 
-## 15. Nếu để GUI trong folder riêng
-
-Ví dụ:
-
-```text
-C:\DACK_MALWARE\yargen_gui_redesign_v3
-```
-
-Chạy:
-
-```powershell
-cd C:\DACK_MALWARE\yargen_gui_redesign_v3
-C:\DACK_MALWARE\venv\Scripts\python.exe main.py
-```
-
-Sau khi mở app, vào Setup chỉnh:
-
-```text
-Working directory = C:\DACK_MALWARE
-yarGen.py = C:\DACK_MALWARE\yarGen.py
-```
-
-Nếu không chỉnh, GUI sẽ tìm `dbs/`, `samples/`, `yarGen.py` trong folder GUI riêng, có thể bị báo thiếu.
-
----
-
-## 16. Workflow demo đề xuất
+## Workflow sử dụng
 
 ### Bước 1: Setup
 
-Vào:
-
-```text
-Setup
-```
-
-Bấm:
+Vào tab **Setup** và bấm:
 
 ```text
 Validate environment
 ```
 
-Mục tiêu:
-
-```text
-Chứng minh môi trường, yarGen.py và DB đã sẵn sàng.
-```
-
----
+Mục tiêu là kiểm tra Python, `yarGen.py`, DB và các dependency.
 
 ### Bước 2: Samples
 
-Vào:
+Vào tab **Samples**:
 
-```text
-Samples
-```
-
-Chọn folder mẫu:
-
-```text
-samples\TrickBot
-```
-
-Bấm:
-
-```text
-Scan folder
-```
-
-Quan sát:
-
-- File type.
-- Size.
-- MD5.
-- SHA256.
-- Archive warning.
-- Suggested preset.
-
----
+1. Chọn folder malware samples.
+2. Bấm **Scan folder**.
+3. Kiểm tra file type, MD5, SHA256.
+4. Nếu cần, bấm **Cluster similar samples**.
 
 ### Bước 3: Family
 
-Vào:
+Vào tab **Family**:
 
-```text
-Family
-```
-
-Nhập:
-
-```text
-Family name = TrickBot
-```
-
-Bấm:
-
-```text
-Apply Family Rule preset
-```
-
----
+1. Nhập tên family, ví dụ `TrickBot`.
+2. Tạo `identifier.txt`.
+3. Bấm **Apply Family Rule preset**.
 
 ### Bước 4: Generate
 
-Vào:
+Vào tab **Generate**:
 
-```text
-Generate
-```
-
-Chọn:
-
-```text
-Preset = TrickBot Demo
-DB Mode = Full quality DB
-```
-
-Bấm:
-
-```text
-Generate YARA rule
-```
-
----
+1. Chọn preset.
+2. Chọn DB mode.
+3. Kiểm tra input/output.
+4. Bấm **Preview command**.
+5. Bấm **Generate YARA rule**.
 
 ### Bước 5: Monitor
 
-Vào:
+Vào tab **Monitor** để xem:
 
-```text
-Monitor
-```
-
-Quan sát:
-
-- Load goodware DB.
-- Process malware files.
+- DB loading.
+- Processing samples.
 - Generate statistics.
-- Generate SIMPLE/SUPER rules.
+- Generate simple/super rules.
 - Preview rule.
 - YARA summary.
 
----
-
 ### Bước 6: Validate/Test
 
-Vào:
+Vào tab **Validate/Test**:
 
-```text
-Validate/Test
-```
-
-Bấm:
-
-```text
-Validate syntax
-Test malware
-Test goodware
-```
-
-Nếu có false positive, tăng `-z`, tăng `-x` hoặc chỉnh rule.
-
----
+1. Bấm **Validate syntax**.
+2. Bấm **Test malware**.
+3. Bấm **Test goodware**.
+4. Export CSV/HTML nếu cần.
 
 ### Bước 7: Reports
 
-Vào:
+Vào tab **Reports**:
+
+1. Chọn file `.yar`.
+2. Bấm **Analyze Rule Scores**.
+3. Xem bảng score và biểu đồ.
+4. Export Markdown/CSV.
+
+---
+
+## Preset
+
+| Preset | Mục đích |
+|---|---|
+| Beginner | Cấu hình cân bằng cho lần chạy đầu tiên |
+| PE Deep | Phân tích PE sâu hơn, có thể chậm hơn |
+| Script Malware | Dành cho PowerShell, JS, VBS, BAT/CMD |
+| Webshell | Dành cho PHP, ASP, ASPX, JSP |
+| Fast Scan | Chạy nhanh để demo hoặc triage |
+| TrickBot Demo | Cấu hình cân bằng cho mẫu TrickBot |
+| Loose Debug | Debug khi yarGen sinh 0 rule, không dùng làm rule cuối |
+
+---
+
+## DB Mode
+
+| DB Mode | Ý nghĩa |
+|---|---|
+| Full quality DB | Dùng đầy đủ DB, chất lượng tốt hơn nhưng chậm hơn |
+| Fast strings DB | Dùng DB strings nhẹ hơn |
+| Fast no-opcodes DB | Bỏ opcodes DB nặng, phù hợp demo nhanh |
+
+---
+
+## Goodware DB
+
+Goodware DB là database chứa đặc trưng của phần mềm sạch.
+
+yarGen dùng Goodware DB để:
+
+- Trừ điểm string phổ biến.
+- Loại string dễ gây false positive.
+- Tạo rule đáng tin cậy hơn.
+
+Các nhóm DB thường gặp:
 
 ```text
+good-strings-part*.db
+good-opcodes-part*.db
+good-exports-part*.db
+good-imphashes-part*.db
+```
+
+---
+
+## SIMPLE Rule và SUPER Rule
+
+### SIMPLE Rule
+
+Rule được tạo cho từng sample hoặc từng file cụ thể.
+
+### SUPER Rule
+
+Rule được tạo từ các đặc trưng chung xuất hiện trong nhiều sample.
+
+Trong đề tài này, **SUPER Rule rất quan trọng** vì nó thể hiện việc tìm đặc trưng chung của một malware family.
+
+---
+
+## Rule Score
+
+Khi bật `--score`, yarGen gắn điểm vào từng string.
+
+Ví dụ:
+
+```yara
+$x1 = "ReflectiveLoader" ascii fullword /* score: '41.00' */
+$s2 = "kernel32.dll" ascii fullword /* score: '-5.00' */
+```
+
+Ý nghĩa:
+
+```text
+Score cao  → string đặc trưng hơn
+Score thấp → string bình thường
+Score âm   → string phổ biến hoặc dễ false positive
+```
+
+Mức đánh giá trong GUI:
+
+| Max Score | Đánh giá |
+|---:|---|
+| > 35 | Rất cao |
+| > 25 | Cao |
+| > 10 | Trung bình |
+| <= 10 | Thấp |
+| Không có score | Không đủ dữ liệu |
+
+---
+
+## Demo nhanh
+
+```text
+Setup
+→ Validate environment
+
+Samples
+→ Chọn samples\TrickBot
+→ Scan folder
+
+Family
+→ Family name = TrickBot
+→ Apply Family Rule preset
+
+Generate
+→ Preset = TrickBot Demo
+→ DB Mode = Fast no-opcodes DB hoặc Full quality DB
+→ Generate YARA rule
+
+Monitor
+→ Xem log và progress
+
+Validate/Test
+→ Validate syntax
+→ Test malware
+→ Test goodware
+
 Reports
-```
-
-Bấm:
-
-```text
-Analyze rule scores
-Export Markdown
-Export CSV
-```
-
-Dùng báo cáo để trình bày rule nào tốt nhất.
-
----
-
-## 17. Lệnh CLI tương đương để debug
-
-Nếu muốn chạy ngoài GUI:
-
-```powershell
-.\venv\Scripts\python.exe -W ignore .\yarGen.py `
-  -m .\samples\TrickBot `
-  -o .\rules\trickbot.yar `
-  -e .\strings_out\trickbot `
-  -a "yarGen GUI" `
-  -p "TrickBot family rule" `
-  -y 6 `
-  -z 0 `
-  -x 10 `
-  -w 2 `
-  -s 512 `
-  -rc 30 `
-  -fs 100 `
-  -fm 5 `
-  --score `
-  --strings
+→ Analyze Rule Scores
+→ Export Markdown/CSV
 ```
 
 ---
 
-## 18. Các lỗi thường gặp
+## Lỗi thường gặp
 
-### 18.1 Không thấy Goodware DB
+### Không thấy DB
 
-Nguyên nhân:
-
-- Working directory sai.
-- Folder `dbs/` không nằm cùng project.
-- GUI đặt trong folder riêng nhưng chưa chỉnh Setup.
+Nguyên nhân thường là sai Working directory.
 
 Cách sửa:
 
 ```text
-Setup → Working directory = C:\DACK_MALWARE
-Setup → yarGen.py = C:\DACK_MALWARE\yarGen.py
+Setup → Working directory = thư mục chứa yarGen.py và dbs/
 ```
 
 ---
 
-### 18.2 yarGen báo `ModuleNotFoundError: scandir`
-
-Cài:
-
-```powershell
-pip install scandir
-```
-
-Hoặc dùng bản yarGen đã chỉnh import phù hợp Python mới.
-
----
-
-### 18.3 Generate lâu
+### Generate chạy lâu
 
 Nguyên nhân:
 
-- Full quality DB load hàng triệu strings.
-- `good-opcodes` rất nặng.
-- Sample nhiều hoặc dung lượng lớn.
+- Full quality DB lớn.
+- Opcode DB nặng.
+- Sample nhiều.
 
 Cách xử lý:
 
-- Dùng `Fast no-opcodes DB` để demo nhanh.
-- Dùng `Full quality DB` khi tạo rule cuối.
+- Dùng `Fast no-opcodes DB` khi demo.
 - Không bật `--opcodes` nếu không cần.
-- Giải nén sample trước, không đưa `.7z/.zip` vào generate.
-- Dùng cluster để chia sample theo nhóm.
+- Dùng Full quality DB khi tạo rule cuối.
 
 ---
 
-### 18.4 yarGen sinh 0 rule
+### yarGen sinh 0 rule
 
 Nguyên nhân có thể:
 
-- Sample không phải malware thật.
-- Sample bị pack/encrypt, ít strings.
+- Sample bị pack/encrypt.
+- Sample quá ít strings.
+- File chưa giải nén.
 - Folder trộn nhiều family.
-- Tham số score quá chặt.
-- DB loại quá nhiều string.
-- File sample là archive chưa giải nén.
+- Tham số quá chặt.
 
-Cách debug:
+Cách xử lý:
 
-- Dùng `Loose Debug`.
+- Dùng preset `Loose Debug`.
 - Bật `--score`.
 - Bật `--strings`.
 - Giảm `-z`.
 - Giảm `-x`.
 - Tăng `-s`.
-- Dùng Sample Analyzer để kiểm tra file thật.
-- Giải nén malware archive trước.
-- Dùng nhiều sample cùng family.
+- Kiểm tra sample bằng tab Samples.
 
 ---
 
-### 18.5 Reports không có score
+### Reports không có score
 
 Nguyên nhân:
 
-- Khi generate không bật `--score`.
+- Khi generate chưa bật `--score`.
 
-Cách sửa:
+Cách xử lý:
 
 ```text
 Generate → bật --score → Generate lại
@@ -1336,7 +556,7 @@ Generate → bật --score → Generate lại
 
 ---
 
-### 18.6 Rule match goodware
+### Rule match goodware
 
 Đây là false positive.
 
@@ -1345,82 +565,98 @@ Cách xử lý:
 - Tăng `-z`.
 - Tăng `-x`.
 - Loại string phổ biến.
-- Kiểm tra Goodware String.
-- Test lại trên goodware folder.
-- Ưu tiên string có score cao và ít phổ biến.
+- Dùng Full quality DB.
+- Test lại goodware.
 
 ---
 
-## 19. Lưu ý an toàn khi dùng malware thật
+## Lưu ý an toàn
 
-- Chỉ phân tích malware trong máy ảo/sandbox.
-- Không double-click hoặc chạy sample thật.
-- Tắt chia sẻ clipboard/folder nếu không cần.
-- Snapshot VM trước khi phân tích.
-- Dùng folder cách ly.
-- Không upload malware lên dịch vụ công khai nếu không được phép.
-- Chỉ dùng công cụ cho mục đích học tập, nghiên cứu và phòng thủ.
+- Chỉ phân tích malware trong máy ảo hoặc sandbox.
+- Không double-click/chạy malware thật.
+- Không upload malware thật lên GitHub.
+- Không commit folder `samples/`, `malware/`, `dbs/`, `venv/`.
+- Project chỉ phục vụ học tập, nghiên cứu và phòng thủ.
 
 ---
 
-## 20. Ý nghĩa trong môn Phân tích mã độc
+## Gợi ý `.gitignore`
 
-Công cụ này giúp sinh viên hiểu quy trình:
+```gitignore
+# Database files
+dbs/
+*.db
 
-```text
-Phân tích tĩnh malware
-→ trích xuất đặc trưng
-→ tìm đặc trưng chung của family
-→ tạo chữ ký YARA
-→ kiểm thử rule
-→ đánh giá false positive
-→ viết báo cáo
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+*.temp
+
+# Generated outputs
+rules/
+strings_out/
+reports/
+clusters/
+_gui_runtime/
+
+# Malware samples
+samples/
+malware/
+goodware/
+
+# Archives and binaries
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.exe
+*.dll
+*.sys
+*.scr
+*.com
+*.bin
+
+# Local settings
+settings.json
+*.local.json
 ```
 
-Nó không chỉ tạo rule, mà giúp hoàn thiện vòng đời:
+---
 
-```text
-Malware analysis → Detection engineering → Validation → Reporting
-```
+## Câu mô tả ngắn cho báo cáo
+
+> Công cụ được xây dựng nhằm hỗ trợ tự động tạo chữ ký YARA từ nhiều mẫu thuộc cùng một họ mã độc. Hệ thống sử dụng `yarGen.py` làm engine để trích xuất đặc trưng và sinh rule, sau đó cung cấp GUI để kiểm tra môi trường, phân tích sample, giám sát tiến trình, validate cú pháp, test malware/goodware, đánh giá false positive, chấm điểm rule và xuất báo cáo.
 
 ---
 
-## 21. Câu mô tả ngắn cho báo cáo
-
-Có thể dùng đoạn sau trong báo cáo đồ án:
-
-> Công cụ được xây dựng nhằm hỗ trợ tự động tạo chữ ký YARA từ nhiều mẫu thuộc cùng một họ mã độc. Hệ thống sử dụng `yarGen.py` làm engine để trích xuất strings, opcode, imphash và exports từ mẫu malware, sau đó so sánh với goodware database nhằm loại bỏ các đặc trưng phổ biến trong phần mềm sạch. Giao diện GUI cung cấp workflow từ kiểm tra môi trường, phân tích mẫu, sinh rule, giám sát tiến trình, validate cú pháp, test malware/goodware, phát hiện false positive, chấm điểm rule và xuất báo cáo. Nhờ đó công cụ hỗ trợ sinh viên và analyst chuyển kết quả phân tích mã độc thành chữ ký phát hiện có thể kiểm thử được.
-
----
-
-## 22. Câu thuyết trình ngắn
-
-> Công cụ của em nhận vào nhiều mẫu mã độc cùng family, tự động trích xuất đặc trưng chung, dùng goodware database để lọc đặc trưng phổ biến, sinh YARA rule bằng yarGen, sau đó validate, test false positive và chấm điểm rule để analyst chọn rule tốt nhất.
-
----
-
-## 23. Gợi ý hướng phát triển tiếp theo
-
-Có thể bổ sung:
-
-- Quality Gate PASS/WARNING/FAIL.
-- MITRE ATT&CK auto mapping từ strings.
-- AI Explain Rule.
-- Rule Diff & Evolution.
-- Threat Intel Assistant.
-- Sample Similarity Graph.
-- Export full analyst report HTML/PDF.
-- CustomTkinter hoặc PySide6 để giao diện hiện đại hơn.
-
----
-
-## 24. License / Disclaimer
+## Disclaimer
 
 Công cụ được xây dựng cho mục đích học tập, nghiên cứu và phòng thủ an toàn thông tin.
 
 Không sử dụng công cụ để phát triển, phát tán hoặc vận hành mã độc.
 
-`yarGen.py` là engine bên ngoài và thuộc quyền của tác giả/dự án gốc. GUI này chỉ là lớp hỗ trợ workflow và không thay đổi thuật toán lõi của yarGen.
+`yarGen.py` là engine bên ngoài thuộc dự án/tác giả gốc. GUI này chỉ là lớp hỗ trợ workflow và không thay đổi thuật toán lõi của yarGen.
 
 ---
 
@@ -1442,3 +678,8 @@ Monitor → xem progress
 Validate/Test → kiểm tra rule
 Reports → Analyze rule scores
 ```
+#   A u t o m a t e d - Y A R A - R u l e - G e n e r a t i o n - T o o l 
+ 
+ #   A u t o m a t e d - Y A R A - R u l e - G e n e r a t i o n - T o o l 
+ 
+ 
