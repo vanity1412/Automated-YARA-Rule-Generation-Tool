@@ -683,3 +683,172 @@ Reports → Analyze rule scores
  #   A u t o m a t e d - Y A R A - R u l e - G e n e r a t i o n - T o o l 
  
  
+---
+
+## Update 3.2.0 - Tích hợp yarGen + VirusTotal/YARA engine
+
+Bản này làm rõ đúng hướng đề tài:
+
+> **Xây dựng công cụ tự động tạo chữ ký YARA từ các đặc trưng chung của một họ mã độc**
+
+Ứng dụng hiện dùng cả hai lớp:
+
+1. **yarGen**: sinh rule YARA có score từ thư mục malware sample.
+2. **YARA engine chính thức**: validate cú pháp và scan malware/goodware bằng `yara-python` hoặc YARA CLI build từ source `VirusTotal/yara`.
+
+### Workflow đề xuất
+
+```text
+Samples cùng family
+→ Family: phân tích folder
+→ Family: Generate common rule
+→ Generate: chạy yarGen
+→ Family: Merge with yarGen rule
+→ Validate/Test: Detect YARA engine
+→ Validate/Test: Validate syntax
+→ Validate/Test: Test malware + goodware
+→ Analysis Suite: Quality Gate / Rule Doctor / Analyst Report
+```
+
+### Family common-feature rule
+
+Tab **Family** được bổ sung:
+
+- `Common-feature rule output`: file rule phụ sinh từ đặc trưng chung.
+- `Coverage ratio`: tỉ lệ mẫu phải cùng chứa một feature, mặc định `0.60`.
+- `Min string length`: độ dài string tối thiểu.
+- `Max common features`: số đặc trưng tối đa đưa vào rule.
+- `Generate common rule`: trích strings chung từ nhiều mẫu trong cùng family và sinh rule YARA.
+- `Merge with yarGen rule`: ghép rule của yarGen với rule đặc trưng chung thành một file cuối.
+- `Validate common rule`: kiểm tra rule bằng YARA engine.
+
+### YARA engine
+
+App tự động ưu tiên backend theo thứ tự:
+
+1. `yara-python`, nếu cài được bằng `pip install yara-python`.
+2. `yara` CLI từ PATH.
+3. Binary `yara` nằm trong thư mục local như `yara-master/cli/yara` nếu bạn đã build source `VirusTotal/yara`.
+
+Thư mục `yara-master` trong project là source chính thức của YARA. Nếu chưa build binary, app vẫn nhận diện source này trong tab **Setup**, nhưng để scan/validate cần cài `yara-python` hoặc build CLI.
+
+### File mới / file đã cập nhật
+
+- `core/family_signature.py`: trích đặc trưng chung và sinh YARA rule.
+- `core/yara_engine.py`: wrapper dùng `yara-python` hoặc YARA CLI.
+- `screens/family_screen.py`: thêm workflow common-feature rule và merge.
+- `screens/validate_screen.py`: validate/scan qua YARA engine wrapper.
+- `core/validators.py`: kiểm tra cả yarGen, source VirusTotal/YARA và YARA engine.
+- `core/state.py`: thêm biến cấu hình cho common rule và merged rule.
+
+## Final test checklist
+
+Bản `3.2.1-final-tested` đã được kiểm thử các luồng chính:
+
+1. `python -m compileall .` để kiểm tra lỗi cú pháp toàn bộ source.
+2. Import các module chính: `app`, `main`, `core.family_signature`, `core.yara_engine`, `screens.family_screen`, `screens.validate_screen`.
+3. Tạo sample giả lập cùng họ mã độc, trích đặc trưng chung, sinh rule `*_CommonFamilyFeatures`, xuất CSV/Markdown report.
+4. Compile rule và scan sample bằng `yara-python` khi dependency khả dụng.
+5. Smoke test GUI bằng Tkinter/Xvfb: app khởi động, build đủ 12 màn hình, rồi đóng sạch.
+
+Khuyến nghị cài dependency trước khi chạy validate/scan thật:
+
+```bash
+pip install -r requirements.txt
+# hoặc tối thiểu cho YARA engine:
+pip install yara-python
+```
+
+Nếu chưa cài `pygame`, app vẫn chạy bình thường; phần nhạc nền sẽ tự tắt thay vì làm app crash.
+
+
+
+## YARA-X support
+
+This build supports both classic YARA and YARA-X. The engine wrapper checks backends in this order:
+
+1. `yara-x` Python module (`pip install yara-x`)
+2. `yr` CLI from VirusTotal/yara-x
+3. `yara-python`
+4. classic `yara` CLI
+
+For the newest YARA-X workflow, install:
+
+```bash
+pip install yara-x
+```
+
+Or install the official `yr` binary / build it with Rust:
+
+```bash
+git clone https://github.com/VirusTotal/yara-x
+cd yara-x
+cargo install --path cli
+```
+
+The Validate/Test screen uses YARA-X compilation/scanning when available, while yarGen is still used to generate initial rules from malware-family samples.
+
+## Validate & Test note
+
+`Detect YARA engine` chi kiem tra backend va duong dan. Nut nay khong scan file. Quy trinh dung:
+
+1. Bam `Detect YARA engine` de xem app dang dung `yara-x`, `yara-python`, `yr`, hay `yara` CLI.
+2. Bam `Validate syntax` de kiem tra file `.yar`.
+3. Bam `Test malware` de scan thu muc malware.
+4. Neu co goodware folder, bam `Test goodware` de do false positive.
+
+Neu detect thanh cong nhung scan khong co match, rule hop le nhung khong khop sample trong folder da chon. Kiem tra lai rule, folder, hoac sample malware.
+
+
+## Official VirusTotal/YARA CLI backend
+
+Bản 3.2.4 ưu tiên dùng trực tiếp công cụ YARA chính thức nếu bạn đặt các file sau trong thư mục gốc của app:
+
+```text
+yara64.exe   hoặc yara.exe
+yarac64.exe  hoặc yarac.exe
+```
+
+Khi bấm **Detect official YARA CLI**, app sẽ ưu tiên backend `yara-cli`. Nếu backend hiện là `yara-cli`, app đang gọi trực tiếp executable từ dự án VirusTotal/yara:
+
+```text
+yarac64.exe rule.yar out.compiled     # validate/compile rule
+yara64.exe rule.yar sample.exe        # scan/nhận diện file
+```
+
+Nếu không tìm thấy hoặc không chạy được `yara64.exe`, app mới fallback sang `yara-python`.
+
+Flow test đúng:
+
+```text
+1. Chọn Rule file (.yar)
+2. Chọn Malware folder
+3. Bấm Detect official YARA CLI
+4. Bấm Validate syntax
+5. Bấm Test malware
+6. Xem dòng [MATCH] rule_name -> file_name trong log
+```
+
+## Version 3.3.0 - Correct workflow update
+
+Main logic has been reorganized:
+
+1. **Analyze Malware** is the main workflow for uploading one malware sample and automatically assessing it.
+   - Static-only analysis: hash, file type, entropy, printable strings, PE sections/imports.
+   - Optional YARA scan against an existing `.yar/.yara` rule file or rule folder.
+   - Uses official VirusTotal/YARA CLI (`yara64.exe` / `yara.exe`) when present, then falls back to Python backends.
+   - Generates a quick triage YARA rule and Markdown assessment report.
+
+2. **Family** remains the thesis-focused workflow for generating a YARA signature from common features across multiple samples from the same malware family.
+
+3. **Validate & Test** is now clearly treated as a post-generation QA step:
+   - Validate generated rule syntax.
+   - Scan malware folder.
+   - Scan a separate clean goodware folder to check false positives.
+   - Do not choose the project root as goodware because it may contain malware samples.
+
+Recommended demo flow:
+
+```text
+Analyze Malware -> Save suggested rule -> Family/Common features for multiple samples -> Validate & Test generated rule
+```

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 TRANSLATIONS = {
     "vi": {
-        "nav.home": "Home", "nav.setup": "Setup", "nav.samples": "Samples", "nav.family": "Family",
+        "nav.home": "Home", "nav.setup": "Setup", "nav.analyze": "Analyze Malware", "nav.samples": "Samples", "nav.family": "Family",
         "nav.generate": "Generate", "nav.monitor": "Monitor", "nav.validate": "Validate/Test",
         "nav.database": "Database", "nav.reports": "Reports", "nav.analysis": "Analysis Suite", "nav.web": "Web Mode", "nav.settings": "Settings",
-        "home.title": "Bảng điều khiển", "home.subtitle": "Workflow tạo chữ ký YARA từ nhiều mẫu malware cùng family.",
+        "home.title": "Bảng điều khiển", "home.subtitle": "Workflow chính: upload malware để tự đánh giá, sinh rule, rồi Validate/Test rule sau khi sinh.",
         "setup.title": "Kiểm tra môi trường", "setup.validate": "Kiểm tra môi trường",
         "setup.install": "Cài requirements", "setup.update_db": "Tải / cập nhật DB", "setup.open": "Mở thư mục project",
-        "samples.title": "Phân tích sample", "samples.scan": "Scan folder",
+        "analyze.title": "Analyze Malware Sample", "analyze.run": "Analyze sample", "analyze.gen_rule": "Generate quick YARA rule", "analyze.scan_rules": "Scan with YARA rules", "analyze.report": "Export report", "samples.title": "Phân tích sample/folder", "samples.scan": "Scan folder",
         "samples.cluster": "Gom cụm mẫu giống nhau", "samples.gen_cluster": "Generate rule per cluster",
         "family.title": "Malware family", "family.apply": "Áp preset Family Rule",
         "family.analyze": "Phân tích folder family", "family.identifier": "Tạo identifier.txt",
@@ -27,13 +27,13 @@ TRANSLATIONS = {
         "status.output": "Output", "status.running": "Status",
     },
     "en": {
-        "nav.home": "Home", "nav.setup": "Setup", "nav.samples": "Samples", "nav.family": "Family",
+        "nav.home": "Home", "nav.setup": "Setup", "nav.analyze": "Analyze Malware", "nav.samples": "Samples", "nav.family": "Family",
         "nav.generate": "Generate", "nav.monitor": "Monitor", "nav.validate": "Validate/Test",
         "nav.database": "Database", "nav.reports": "Reports", "nav.analysis": "Analysis Suite", "nav.web": "Web Mode", "nav.settings": "Settings",
-        "home.title": "Dashboard", "home.subtitle": "Workflow to build YARA signatures from malware family samples.",
+        "home.title": "Dashboard", "home.subtitle": "Main workflow: upload malware for automatic assessment, generate rules, then Validate/Test generated rules.",
         "setup.title": "Environment Check", "setup.validate": "Validate environment",
         "setup.install": "Install requirements", "setup.update_db": "Download / update DBs", "setup.open": "Open project folder",
-        "samples.title": "Sample Analyzer", "samples.scan": "Scan folder",
+        "analyze.title": "Analyze Malware Sample", "analyze.run": "Analyze sample", "analyze.gen_rule": "Generate quick YARA rule", "analyze.scan_rules": "Scan with YARA rules", "analyze.report": "Export report", "samples.title": "Sample/Folder Analyzer", "samples.scan": "Scan folder",
         "samples.cluster": "Cluster similar samples", "samples.gen_cluster": "Generate rule per cluster",
         "family.title": "Malware Family", "family.apply": "Apply Family Rule preset",
         "family.analyze": "Analyze family folder", "family.identifier": "Create identifier.txt",

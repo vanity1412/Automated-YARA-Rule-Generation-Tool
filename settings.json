@@ -1,9 +1,9 @@
 {
-  "language": "en",
+  "language": "vi",
   "language_selected": true,
   "theme": "light",
   "mode": "basic",
   "default_db_mode": "Full quality DB",
   "log_retention_lines": 8000,
-  "background_music_enabled": true
+  "background_music_enabled": false
 }

@@ -51,6 +51,7 @@ DARK_WUXIA = {
 NAV_ICONS = {
     "home": "🏯",
     "setup": "🧭",
+    "analyze": "🔬",
     "samples": "🧪",
     "family": "🐉",
     "generate": "⚔",

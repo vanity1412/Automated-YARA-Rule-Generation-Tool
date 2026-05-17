@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 APP_TITLE = "yarGen GUI - Wuxia YARA Forge"
-APP_VERSION = "3.1.1-wuxia-web"
+APP_VERSION = "3.3.0-auto-malware-analyzer-final"
 
 MIN_DB_PARTS = 9
 EXPECTED_DB_PREFIXES = [
@@ -24,6 +24,7 @@ ARCHIVE_EXTENSIONS = {
 NAV_ITEMS = [
     ("home", "nav.home"),
     ("setup", "nav.setup"),
+    ("analyze", "nav.analyze"),
     ("samples", "nav.samples"),
     ("family", "nav.family"),
     ("generate", "nav.generate"),

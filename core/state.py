@@ -27,6 +27,11 @@ class AppState:
         self.var_family_name = tk.StringVar(root, value="malware_family")
         self.var_family_goal = tk.StringVar(root, value="Tạo chữ ký YARA từ đặc trưng chung của một họ mã độc")
         self.var_min_family_samples = tk.StringVar(root, value="2")
+        self.var_common_rule_output = tk.StringVar(root, value=str(rd / "rules" / "family_common.yar"))
+        self.var_common_coverage = tk.StringVar(root, value="0.60")
+        self.var_common_min_len = tk.StringVar(root, value="6")
+        self.var_common_max_features = tk.StringVar(root, value="40")
+        self.var_merged_rule_output = tk.StringVar(root, value=str(rd / "rules" / "family_combined.yar"))
 
         self.var_min_len = tk.StringVar(root, value="8")
         self.var_min_score = tk.StringVar(root, value="0")
@@ -69,6 +74,12 @@ class AppState:
         self.var_report_dir = tk.StringVar(root, value=str(rd / "reports"))
         self.var_auto_validate = tk.BooleanVar(root, value=True)
 
+
+        self.var_analyze_sample_file = tk.StringVar(root, value="")
+        self.var_analyze_rule_source = tk.StringVar(root, value=str(rd / "rules"))
+        self.var_analyze_report_dir = tk.StringVar(root, value=str(rd / "reports" / "sample_analysis"))
+        self.var_analyze_rule_output = tk.StringVar(root, value=str(rd / "rules" / "sample_auto_triage.yar"))
+
         self.var_analyzer_dir = tk.StringVar(root, value=str(rd / "samples"))
         self.var_cluster_threshold = tk.StringVar(root, value="0.35")
         self.var_cluster_output_dir = tk.StringVar(root, value=str(rd / "clusters"))
@@ -88,6 +99,7 @@ class AppState:
 
         self.last_command = []
         self.last_test_results = []
+        self.last_sample_analysis = None
         self.last_rule_score_rows = []
         self.last_rule_score_markdown = ""
         self.sample_features = []

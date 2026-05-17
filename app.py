@@ -17,6 +17,7 @@ from widgets.wuxia_theme import WUXIA, DARK_WUXIA
 from screens.welcome_screen import WelcomeScreen
 from screens.home_screen import HomeScreen
 from screens.setup_screen import SetupScreen
+from screens.analyze_screen import AnalyzeScreen
 from screens.samples_screen import SamplesScreen
 from screens.family_screen import FamilyScreen
 from screens.generate_screen import GenerateScreen
@@ -190,7 +191,7 @@ class YarGenApp(tk.Tk):
 
     def _build_screens(self):
         screen_classes = {
-            "home": HomeScreen, "setup": SetupScreen, "samples": SamplesScreen, "family": FamilyScreen,
+            "home": HomeScreen, "setup": SetupScreen, "analyze": AnalyzeScreen, "samples": SamplesScreen, "family": FamilyScreen,
             "generate": GenerateScreen, "monitor": MonitorScreen, "validate": ValidateScreen,
             "database": DatabaseScreen, "reports": ReportsScreen, "analysis": AnalysisSuiteScreen, "web": WebModeScreen, "settings": SettingsScreen,
         }

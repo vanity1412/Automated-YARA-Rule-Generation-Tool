@@ -3,6 +3,9 @@ pefile
 lxml
 pygame
 # Optional but recommended for GUI Validate/Test tab.
+# YARA-X support (official modern engine):
+yara-x
+# Classic YARA support:
 yara-python
 # Optional fuzzy hashing backends for future analyzer extension; GUI works without them.
 # ssdeep
